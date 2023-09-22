@@ -7,59 +7,53 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="360.0" style="-fx-background-color: #6A5ACD;" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo4.Controler.RegistrationController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="367.0" prefWidth="360.0" style="-fx-background-color: #6A5ACD;" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo4.Controler.RegistrationController">
    <children>
-      <Button fx:id="buttonRegistration" alignment="CENTER" layoutX="112.0" layoutY="363.0" mnemonicParsing="false" style="-fx-background-color: #ADD8E6;" text="Зарегистрироваться">
+      <Button fx:id="buttonRegistration" alignment="CENTER" layoutX="112.0" layoutY="322.0" mnemonicParsing="false" style="-fx-background-color: #ADD8E6;" text="Зарегистрироваться">
          <font>
             <Font name="System Bold" size="12.0" />
          </font>
       </Button>
-      <TextField fx:id="stringNumberPassport" layoutX="180.0" layoutY="325.0" prefHeight="26.0" prefWidth="135.0" promptText="Номер паспорта" />
-      <TextField fx:id="stringName" layoutX="90.0" layoutY="55.0" prefHeight="25.0" prefWidth="230.0" promptText="Имя" />
-      <TextField fx:id="stringCountry" layoutX="39.0" layoutY="226.0" prefHeight="26.0" prefWidth="135.0" promptText="Страна" />
-      <TextField fx:id="stringSeriesPassport" layoutX="37.0" layoutY="325.0" prefHeight="26.0" prefWidth="135.0" promptText="Серия паспорта" />
-      <Label alignment="CENTER" contentDisplay="TOP" layoutX="88.0" layoutY="14.0" prefHeight="28.0" prefWidth="183.0" style="-fx-background-color: #6B8FD4; -fx-background-radius: 5;" text="Регистрация">
+      <TextField fx:id="stringNumberPassport" layoutX="180.0" layoutY="284.0" prefHeight="26.0" prefWidth="135.0" promptText="Номер паспорта" />
+      <TextField fx:id="stringName" layoutX="90.0" layoutY="50.0" prefHeight="25.0" prefWidth="230.0" promptText="Имя" />
+      <TextField fx:id="stringCountry" layoutX="39.0" layoutY="185.0" prefHeight="26.0" prefWidth="135.0" promptText="Страна" />
+      <TextField fx:id="stringSeriesPassport" layoutX="37.0" layoutY="284.0" prefHeight="26.0" prefWidth="135.0" promptText="Серия паспорта" />
+      <Label alignment="CENTER" contentDisplay="TOP" layoutX="88.0" layoutY="9.0" prefHeight="28.0" prefWidth="183.0" style="-fx-background-color: #6B8FD4; -fx-background-radius: 5;" text="Регистрация">
          <font>
             <Font name="System Bold" size="19.0" />
          </font>
       </Label>
-      <TextField fx:id="stringCity" layoutX="182.0" layoutY="226.0" prefHeight="26.0" prefWidth="135.0" promptText="Город" />
-      <TextField fx:id="stringStreet" layoutX="38.0" layoutY="264.0" prefHeight="26.0" prefWidth="135.0" promptText="Улица" />
-      <TextField fx:id="stringHome" layoutX="181.0" layoutY="264.0" prefHeight="26.0" prefWidth="135.0" promptText="Дом" />
-      <Label alignment="CENTER" layoutX="112.0" layoutY="195.0" prefHeight="19.0" prefWidth="135.0" style="-fx-background-color: #6B8FD4; -fx-background-radius: 5;" text="Адрес проживания">
+      <TextField fx:id="stringCity" layoutX="182.0" layoutY="185.0" prefHeight="26.0" prefWidth="135.0" promptText="Город" />
+      <TextField fx:id="stringStreet" layoutX="38.0" layoutY="223.0" prefHeight="26.0" prefWidth="135.0" promptText="Улица" />
+      <TextField fx:id="stringHome" layoutX="181.0" layoutY="223.0" prefHeight="26.0" prefWidth="135.0" promptText="Дом" />
+      <Label alignment="CENTER" layoutX="112.0" layoutY="154.0" prefHeight="19.0" prefWidth="135.0" style="-fx-background-color: #6B8FD4; -fx-background-radius: 5;" text="Адрес проживания">
          <font>
             <Font name="System Bold" size="13.0" />
          </font>
       </Label>
-      <Button fx:id="buttonExit" layoutX="18.0" layoutY="365.0" mnemonicParsing="false" prefHeight="21.0" prefWidth="1.0" style="-fx-background-color: #ADD8E6;" text="&lt;">
+      <Button fx:id="buttonExit" layoutX="18.0" layoutY="324.0" mnemonicParsing="false" prefHeight="21.0" prefWidth="1.0" style="-fx-background-color: #ADD8E6;" text="&lt;">
          <font>
             <Font size="10.0" />
          </font>
       </Button>
-      <TextField fx:id="stringPost" layoutX="89.0" layoutY="92.0" prefHeight="25.0" prefWidth="230.0" promptText="Почта" />
-      <TextField fx:id="stringLogin" layoutX="88.0" layoutY="125.0" prefHeight="25.0" prefWidth="230.0" promptText="Логин" />
-      <PasswordField fx:id="stringPassword" layoutX="88.0" layoutY="159.0" prefHeight="26.0" prefWidth="230.0" promptText="Пароль" />
-      <Label alignment="CENTER" contentDisplay="CENTER" layoutX="18.0" layoutY="158.0" prefHeight="28.0" prefWidth="64.0" text="Пароль: ">
+      <TextField fx:id="stringLogin" layoutX="88.0" layoutY="84.0" prefHeight="25.0" prefWidth="230.0" promptText="Логин" />
+      <PasswordField fx:id="stringPassword" layoutX="88.0" layoutY="118.0" prefHeight="26.0" prefWidth="230.0" promptText="Пароль" />
+      <Label alignment="CENTER" contentDisplay="CENTER" layoutX="18.0" layoutY="117.0" prefHeight="28.0" prefWidth="64.0" text="Пароль: ">
          <font>
             <Font name="System Bold" size="12.0" />
          </font>
       </Label>
-      <Label alignment="CENTER" contentDisplay="CENTER" layoutX="14.0" layoutY="124.0" prefHeight="28.0" prefWidth="64.0" text="Логин:">
+      <Label alignment="CENTER" contentDisplay="CENTER" layoutX="14.0" layoutY="83.0" prefHeight="28.0" prefWidth="64.0" text="Логин:">
          <font>
             <Font name="System Bold" size="12.0" />
          </font>
       </Label>
-      <Label alignment="CENTER" contentDisplay="CENTER" layoutX="14.0" layoutY="91.0" prefHeight="28.0" prefWidth="64.0" text="Почта:">
+      <Label alignment="CENTER" contentDisplay="CENTER" layoutX="9.0" layoutY="49.0" prefHeight="28.0" prefWidth="64.0" text="Имя:">
          <font>
             <Font name="System Bold" size="12.0" />
          </font>
       </Label>
-      <Label alignment="CENTER" contentDisplay="CENTER" layoutX="9.0" layoutY="54.0" prefHeight="28.0" prefWidth="64.0" text="Имя:">
-         <font>
-            <Font name="System Bold" size="12.0" />
-         </font>
-      </Label>
-      <Label alignment="CENTER" layoutX="112.0" layoutY="299.0" prefHeight="19.0" prefWidth="135.0" style="-fx-background-color: #6B8FD4; -fx-background-radius: 5;" text="Паспортные данные">
+      <Label alignment="CENTER" layoutX="112.0" layoutY="258.0" prefHeight="19.0" prefWidth="135.0" style="-fx-background-color: #6B8FD4; -fx-background-radius: 5;" text="Паспортные данные">
          <font>
             <Font name="System Bold" size="13.0" />
          </font>

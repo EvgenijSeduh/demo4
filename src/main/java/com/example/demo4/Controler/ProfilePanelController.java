@@ -16,6 +16,15 @@ public class ProfilePanelController {
     private Button buttonExit;
 
     @FXML
+    private Button buttonRedactCity;
+
+    @FXML
+    private Button buttonRedactCountry;
+
+    @FXML
+    private Button buttonRedactHome;
+
+    @FXML
     private Button buttonRedactLogin;
 
     @FXML
@@ -25,6 +34,18 @@ public class ProfilePanelController {
     private Button buttonRedactPassword;
 
     @FXML
+    private Button buttonRedactStreet;
+
+    @FXML
+    private TextField city;
+
+    @FXML
+    private TextField country;
+
+    @FXML
+    private TextField home;
+
+    @FXML
     private TextField login;
 
     @FXML
@@ -32,6 +53,9 @@ public class ProfilePanelController {
 
     @FXML
     private TextField password;
+
+    @FXML
+    private TextField street;
 
     @FXML
     void initialize(){

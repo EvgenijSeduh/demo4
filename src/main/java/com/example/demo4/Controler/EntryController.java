@@ -2,8 +2,7 @@ package com.example.demo4.Controler;
 
 
 import com.example.demo4.Model.ModelAutorizateUser;
-import com.example.demo4.Model.ModelRegistrationUser;
-import com.example.demo4.User;
+import com.example.demo4.Recource.User;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -14,6 +13,8 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class EntryController {
@@ -35,11 +36,17 @@ public class EntryController {
         buttonEntry.setOnAction(event -> {
             User user = new User();
             user.setLogin(stringLogin.getText().trim());
-            user.setPassword(stringPassword.getText().trim());
+            try {
+                user.setPassword(stringPassword.getText().trim());
+            } catch (NoSuchAlgorithmException e) {
+                throw new RuntimeException(e);
+            }
 
             if(user.isFillAutorization()){
                 try {
                     if(checkUser(user)){
+                        //fillInUser(user);
+
                         buttonRegistration.getScene().getWindow().hide();
 
                         FXMLLoader loader = new FXMLLoader();
@@ -86,6 +93,12 @@ public class EntryController {
             stage.show();
         });
 
+    }
+
+    private void fillInfoAboutUser(User user)  throws ClassNotFoundException,SQLException{
+        ModelAutorizateUser modelAutorizateUser = new ModelAutorizateUser();
+        ResultSet userInfo = modelAutorizateUser.getDBInfoUser();
+        userInfo.next();
     }
 
     private boolean checkUser(User user) throws SQLException, ClassNotFoundException {

@@ -1,5 +1,10 @@
 package com.example.demo4.Controler;
 
+import com.example.demo4.Model.PanelClientModel;
+import com.example.demo4.Recource.Bicycle;
+import javafx.beans.Observable;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -21,24 +26,32 @@ public class PanelClientController {
 
     @FXML
     private Button buttonUpdate;
+    @FXML
+    private TableView<Bicycle> tableBicycle;
+    @FXML
+    private TableColumn<Bicycle, Integer> tableId;
 
     @FXML
-    private TableView<?> table;
+    private TableColumn<Bicycle, String> tableEquipment;
 
     @FXML
-    private TableColumn<?, ?> tableEquipment;
+    private TableColumn<Bicycle, String> tableInfo;
 
     @FXML
-    private TableColumn<?, ?> tableInfo;
+    private TableColumn<Bicycle, String> tableName;
 
     @FXML
-    private TableColumn<?, ?> tableName;
+    private TableColumn<Bicycle, String> tableStatus;
 
     @FXML
-    private TableColumn<?, ?> tableStatus;
+    private TableColumn<Bicycle, Integer> tablePrice;
 
     @FXML
     void initialize() {
+        Bicycle bike = new Bicycle();
+        ObservableList<Bicycle> list = FXCollections.observableArrayList();
+
+        tableBicycle.setItems(list);
 
         buttonExit.setOnAction(event -> {
             buttonExit.getScene().getWindow().hide();
@@ -74,6 +87,11 @@ public class PanelClientController {
             stage.setResizable(false);
             stage.setScene(new Scene(root));
             stage.show();
+        });
+
+        buttonUpdate.setOnAction(event -> {
+            PanelClientModel panelClientModel = new PanelClientModel();
+            panelClientModel.getBikeInfo();
         });
     }
 

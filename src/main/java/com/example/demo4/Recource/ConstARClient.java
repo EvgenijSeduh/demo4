@@ -1,6 +1,6 @@
-package com.example.demo4.Model;
+package com.example.demo4.Recource;
 
-import com.example.demo4.Config;
+import com.example.demo4.Recource.Config;
 
 public class ConstARClient extends Config {
     protected static final String AUTORIZATIONS_TABLE = "Autorizations";

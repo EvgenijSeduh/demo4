@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="349.0" prefWidth="281.0" style="-fx-background-color: #6A5ACD;" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo4.Controler.ProfilePanelController">
+   <children>
+      <Button fx:id="buttonExit" alignment="CENTER" layoutX="110.0" layoutY="309.0" mnemonicParsing="false" style="-fx-background-color: #ADD8E6;" text="Назад">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Button>
+      <Label alignment="CENTER" contentDisplay="TOP" layoutX="83.0" layoutY="14.0" prefHeight="28.0" prefWidth="106.0" style="-fx-background-color: #6B8FD4; -fx-background-radius: 5;" text="Профиль">
+         <font>
+            <Font name="System Bold" size="19.0" />
+         </font>
+      </Label>
+      <Label contentDisplay="CENTER" layoutX="7.0" layoutY="50.0" prefHeight="28.0" prefWidth="46.0" text="Имя:">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Label>
+      <Label contentDisplay="CENTER" layoutX="7.0" layoutY="84.0" prefHeight="28.0" prefWidth="45.0" text="Логин: ">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Label>
+      <Label contentDisplay="CENTER" layoutX="7.0" layoutY="118.0" prefHeight="28.0" prefWidth="58.0" text="Пароль: ">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Label>
+      <Button fx:id="buttonRedactName" alignment="CENTER" layoutX="239.0" layoutY="50.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="28.0" style="-fx-background-color: #ADD8E6;" text="&lt;">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Button>
+      <Button fx:id="buttonRedactLogin" alignment="CENTER" layoutX="239.0" layoutY="84.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="28.0" style="-fx-background-color: #ADD8E6;" text="&lt;">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Button>
+      <Button fx:id="buttonRedactPassword" alignment="CENTER" layoutX="239.0" layoutY="119.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="28.0" style="-fx-background-color: #ADD8E6;" text="&lt;">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Button>
+      <TextField fx:id="password" layoutX="62.0" layoutY="119.0" prefHeight="26.0" prefWidth="170.0" />
+      <TextField fx:id="login" layoutX="62.0" layoutY="85.0" prefHeight="26.0" prefWidth="170.0" />
+      <TextField fx:id="name" layoutX="63.0" layoutY="51.0" prefHeight="26.0" prefWidth="170.0" />
+      <Label contentDisplay="CENTER" layoutX="7.0" layoutY="152.0" prefHeight="28.0" prefWidth="58.0" text="Страна:">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Label>
+      <Button fx:id="buttonRedactCountry" alignment="CENTER" layoutX="239.0" layoutY="153.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="28.0" style="-fx-background-color: #ADD8E6;" text="&lt;">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Button>
+      <TextField fx:id="country" layoutX="62.0" layoutY="153.0" prefHeight="26.0" prefWidth="170.0" />
+      <Label contentDisplay="CENTER" layoutX="7.0" layoutY="185.0" prefHeight="28.0" prefWidth="58.0" text="Город:">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Label>
+      <Button fx:id="buttonRedactCity" alignment="CENTER" layoutX="239.0" layoutY="186.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="28.0" style="-fx-background-color: #ADD8E6;" text="&lt;">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Button>
+      <TextField fx:id="city" layoutX="62.0" layoutY="186.0" prefHeight="26.0" prefWidth="170.0" />
+      <Label contentDisplay="CENTER" layoutX="7.0" layoutY="218.0" prefHeight="28.0" prefWidth="58.0" text="Улица:">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Label>
+      <Button fx:id="buttonRedactStreet" alignment="CENTER" layoutX="239.0" layoutY="219.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="28.0" style="-fx-background-color: #ADD8E6;" text="&lt;">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Button>
+      <TextField fx:id="street" layoutX="62.0" layoutY="219.0" prefHeight="26.0" prefWidth="170.0" />
+      <Label contentDisplay="CENTER" layoutX="7.0" layoutY="251.0" prefHeight="28.0" prefWidth="58.0" text="Дом:">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Label>
+      <Button fx:id="buttonRedactHome" alignment="CENTER" layoutX="239.0" layoutY="252.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="28.0" style="-fx-background-color: #ADD8E6;" text="&lt;">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Button>
+      <TextField fx:id="home" layoutX="62.0" layoutY="252.0" prefHeight="26.0" prefWidth="170.0" />
+   </children>
+</AnchorPane>

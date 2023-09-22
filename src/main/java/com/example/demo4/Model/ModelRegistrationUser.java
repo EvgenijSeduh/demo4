@@ -1,6 +1,7 @@
 package com.example.demo4.Model;
 
-import com.example.demo4.User;
+import com.example.demo4.Recource.ConstARClient;
+import com.example.demo4.Recource.User;
 
 import java.sql.*;
 
@@ -108,13 +109,14 @@ public class ModelRegistrationUser extends ConstARClient {
             prSt = getDbConnection().prepareStatement(setAutorizationsDate);
             prSt.setInt(1, parseInt(idUser.getString(ConstARClient.USER_ID)));
             prSt.setString(2, user.getLogin());
-            prSt.setString(3, user.getPassword());
+            prSt.setBytes(3, user.getPassword());
 
             prSt.executeUpdate();
 //----------------------------------------------------------------------
 
             statement.close();
             prSt.close();
+            dbConnection.close();
             return true;
         }
         catch (SQLException e) {
@@ -127,4 +129,6 @@ public class ModelRegistrationUser extends ConstARClient {
         }
 
     }
+
+
 }

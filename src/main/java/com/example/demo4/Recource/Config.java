@@ -1,4 +1,4 @@
-package com.example.demo4;
+package com.example.demo4.Recource;
 
 public class Config {
     protected static final String dbHost = "std-mysql.ist.mospolytech.ru";

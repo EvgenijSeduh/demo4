@@ -1,7 +1,7 @@
 package com.example.demo4.Controler;
 
 import com.example.demo4.Model.ModelRegistrationUser;
-import com.example.demo4.User;
+import com.example.demo4.Recource.User;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -11,6 +11,7 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
 
 public class RegistrationController {
 
@@ -50,23 +51,28 @@ public class RegistrationController {
     void initialize(){
         buttonRegistration.setOnAction(event ->{
             User user = new User();
-            user.setLogin(stringLogin.getText().trim());
-            user.setPassword(stringPassword.getText().trim());
-            user.setName(stringName.getText().trim());
-            user.setCountry(stringCountry.getText().trim());
-            user.setCity(stringCity.getText().trim());
-            user.setStreet(stringStreet.getText().trim());
-            user.setHome(stringHome.getText().trim());
-            user.setSeriesPass(stringSeriesPassport.getText().trim());
-            user.setNumberPass(stringNumberPassport.getText().trim());
+
+            System.out.println(user.setName(stringName.getText().trim())?"Имя: \tV":"Имя: \tХ");
+            System.out.println(user.setCountry(stringCountry.getText().trim())?"Страна: \tV":"Страна: \tХ");
+            System.out.println(user.setCity(stringCity.getText().trim())?"Город: \tV":"Город: \tХ");
+            System.out.println(user.setStreet(stringStreet.getText().trim())?"Улица: \tV":"Улица: \tХ");
+            System.out.println(user.setHome(stringHome.getText().trim())?"Дом: \tV":"Дом: \tХ");
+            System.out.println(user.setSeriesPass(stringSeriesPassport.getText().trim())?"Номер паспорта: \tV":"Номер паспорта: \tХ");
+            System.out.println(user.setNumberPass(stringNumberPassport.getText().trim())?"Серия паспорта: \tV":"Серия паспорта: \tХ");
+            System.out.println(user.setLogin(stringLogin.getText().trim())?"Логин: \tV":"Логин: \tХ");
+            try {
+                System.out.println(user.setPassword(stringPassword.getText().trim())?"Пароль: \tV":"Пароль: \tХ");
+            } catch (NoSuchAlgorithmException e) {
+                throw new RuntimeException(e);
+            }
 
             if(user.isFill())
                 if(singUpUser(user))
-                    System.out.println("Вы зарегестрированны");
+                    System.out.println("Вы зарегистрированы");
                 else
-                    System.out.println("Вы не зарегестрированны");
+                    System.out.println("Вы не зарегистрированы");
             else
-                System.out.println("There are empty fields");
+                System.out.println("Заполнены не все поля");
         });
 
         buttonExit.setOnAction(event -> {
