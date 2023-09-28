@@ -1,11 +1,11 @@
 package com.example.demo4.Model;
 
-import com.example.demo4.Recource.ConstARClient;
-import com.example.demo4.Recource.User;
+import com.example.demo4.Recource.Const.ConstAllTable;
+import com.example.demo4.Recource.InfoUser;
 
 import java.sql.*;
 
-public class ModelAutorizateUser extends ConstARClient {
+public class ModelAutorizateUser extends ConstAllTable {
     Connection dbConnection;
 
     public Connection getDbConnection() throws ClassNotFoundException, SQLException {
@@ -20,14 +20,14 @@ public class ModelAutorizateUser extends ConstARClient {
     }
 
 
-    public boolean checkUser(User user) throws SQLException, ClassNotFoundException {
+    public boolean checkUser(InfoUser infoUser) throws SQLException, ClassNotFoundException {
         try {
             String searchUser = "SELECT COUNT(*)FROM " + AUTORIZATIONS_TABLE
                     + " WHERE login = ? AND password = ?;";
 
             PreparedStatement prSt = getDbConnection().prepareStatement(searchUser);
-            prSt.setString(1, user.getLogin());
-            prSt.setBytes(2, user.getPassword());
+            prSt.setString(1, infoUser.getLogin());
+            prSt.setBytes(2, infoUser.getPassword());
 
             ResultSet autorizationDateUser = prSt.executeQuery();
             autorizationDateUser.next();
@@ -86,5 +86,35 @@ public class ModelAutorizateUser extends ConstARClient {
             e.printStackTrace();
         }
         return userInfo;
+    }
+
+    public String checkMandat(InfoUser infoUser) throws SQLException, ClassNotFoundException {
+        ResultSet result = null;
+        try {
+            String getMandatString = "SELECT " + USER_MANDAT + ", "
+                    + AUTORIZATIONS_LOGIN + ", "
+                    + AUTORIZATIONS_PASSWORD + " FROM "
+                    + AUTORIZATIONS_TABLE + " JOIN " + USER_TABLE
+                    + " ON " + AUTORIZATIONS_TABLE +"." + AUTORIZATIONS_IDUSER + " = "
+                    +USER_TABLE + "." + USER_ID + " WHERE "
+                    + AUTORIZATIONS_TABLE + "." + AUTORIZATIONS_LOGIN + " = ?"
+                    + " AND " + AUTORIZATIONS_TABLE + "." + AUTORIZATIONS_PASSWORD + " = ?";
+            System.out.println(getMandatString);
+            PreparedStatement prSt = getDbConnection().prepareStatement(getMandatString);
+            prSt.setString(1, infoUser.getLogin());
+            prSt.setBytes(2, infoUser.getPassword());
+
+            result = prSt.executeQuery();
+            result.next();
+            System.out.println(result.getString(USER_MANDAT));
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+        catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return result.getString(USER_MANDAT);
+
     }
 }

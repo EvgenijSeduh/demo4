@@ -2,14 +2,13 @@ package com.example.demo4.Controler;
 
 
 import com.example.demo4.Model.ModelAutorizateUser;
-import com.example.demo4.Recource.User;
+import com.example.demo4.Recource.Const.ConstAllTable;
+import com.example.demo4.Recource.InfoUser;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -34,34 +33,57 @@ public class EntryController {
     @FXML
     void initialize(){
         buttonEntry.setOnAction(event -> {
-            User user = new User();
-            user.setLogin(stringLogin.getText().trim());
+            InfoUser infoUser = new InfoUser();
+            infoUser.setLogin(stringLogin.getText().trim());
             try {
-                user.setPassword(stringPassword.getText().trim());
+                infoUser.setPassword(stringPassword.getText().trim());
             } catch (NoSuchAlgorithmException e) {
                 throw new RuntimeException(e);
             }
 
-            if(user.isFillAutorization()){
+            if(infoUser.isFillAutorization()){
                 try {
-                    if(checkUser(user)){
-                        //fillInUser(user);
-
+                    if(checkUser(infoUser)){
                         buttonRegistration.getScene().getWindow().hide();
 
                         FXMLLoader loader = new FXMLLoader();
-                        loader.setLocation(getClass().getResource("/com/example/demo4/Viev/ClientPanel.fxml"));
                         try {
-                            loader.load();
+                            if (checkMandat(infoUser).equals("client")) {
+                                loader.setLocation(getClass().getResource("/com/example/demo4/Viev/ClientPanel.fxml"));
+                                loader.load();
+                                Parent root = loader.getRoot();
+                                Stage stage = new Stage();
+                                stage.setTitle("Панель клиента");
+                                stage.setResizable(false);
+                                stage.setScene(new Scene(root));
+                                stage.show();
+                            } else if (checkMandat(infoUser).equals("employee")) {
+                                loader.setLocation(getClass().getResource("/com/example/demo4/Viev/EmployeePanel.fxml"));
+                                loader.load();
+                                Parent root = loader.getRoot();
+                                Stage stage = new Stage();
+                                stage.setTitle("Панель сотрудника");
+                                stage.setResizable(false);
+                                stage.setScene(new Scene(root));
+                                stage.show();
+                            } else if (checkMandat(infoUser).equals("super_user")) {
+                                loader.setLocation(getClass().getResource("com/example/demo4/Viev/EmployeePanel.fxml"));
+                                loader.load();
+                                Parent root = loader.getRoot();
+                                Stage stage = new Stage();
+                                stage.setTitle("Панель администратора");
+                                stage.setResizable(false);
+                                stage.setScene(new Scene(root));
+                                stage.show();
+                            }
+                            else{
+                                Alert unknowMandat = new Alert(Alert.AlertType.ERROR, "Не удалось узнать мандат", ButtonType.OK);
+                                unknowMandat.showAndWait();
+                            }
+
                         } catch (IOException e) {
                             throw new RuntimeException(e);
                         }
-                        Parent root = loader.getRoot();
-                        Stage stage = new Stage();
-                        stage.setTitle("Панель клиента");
-                        stage.setResizable(false);
-                        stage.setScene(new Scene(root));
-                        stage.show();
                     }
                     else
                         System.out.println("Логин и/или пароль неверный");
@@ -95,15 +117,20 @@ public class EntryController {
 
     }
 
-    private void fillInfoAboutUser(User user)  throws ClassNotFoundException,SQLException{
+    private void fillInfoAboutUser(InfoUser infoUser)  throws ClassNotFoundException,SQLException{
         ModelAutorizateUser modelAutorizateUser = new ModelAutorizateUser();
         ResultSet userInfo = modelAutorizateUser.getDBInfoUser();
         userInfo.next();
     }
 
-    private boolean checkUser(User user) throws SQLException, ClassNotFoundException {
+    private boolean checkUser(InfoUser infoUser) throws SQLException, ClassNotFoundException {
         ModelAutorizateUser modelAutorizateUser = new ModelAutorizateUser();
-        return modelAutorizateUser.checkUser(user);
+        return modelAutorizateUser.checkUser(infoUser);
+    }
+
+    public String checkMandat(InfoUser infoUser) throws SQLException, ClassNotFoundException {
+        ModelAutorizateUser modelAutorizateUser = new ModelAutorizateUser();
+        return modelAutorizateUser.checkMandat(infoUser);
     }
 
 }

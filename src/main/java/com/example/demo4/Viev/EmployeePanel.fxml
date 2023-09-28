@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="831.0" style="-fx-background-color: #6A5ACD;" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo4.Controler.EmployeePanelController">
+   <children>
+      <Label alignment="CENTER" contentDisplay="TOP" layoutX="305.0" layoutY="4.0" prefHeight="28.0" prefWidth="218.0" style="-fx-background-color: #6B8FD4; -fx-background-radius: 5;" text="Панель сотрудника">
+         <font>
+            <Font name="System Bold" size="19.0" />
+         </font>
+      </Label>
+      <Button fx:id="buttonExit" layoutX="701.0" layoutY="8.0" mnemonicParsing="false" prefHeight="18.0" prefWidth="43.0" style="-fx-background-color: #ADD8E6;" text="Выйти">
+         <font>
+            <Font size="10.0" />
+         </font>
+      </Button>
+      <Button fx:id="buttonProfile" layoutX="760.0" layoutY="7.0" mnemonicParsing="false" prefHeight="22.0" prefWidth="56.0" style="-fx-background-color: #ADD8E6;" text="Профиль">
+         <font>
+            <Font size="10.0" />
+         </font>
+      </Button>
+      <TabPane layoutX="-2.0" layoutY="38.0" prefHeight="364.0" prefWidth="828.0" tabClosingPolicy="UNAVAILABLE">
+        <tabs>
+          <Tab fx:id="rentBikeTab" text="Аренда велосипеда">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="235.0" prefWidth="657.0">
+                     <children>
+                        <Label layoutX="8.0" layoutY="251.0" text="Велосипед:">
+                           <font>
+                              <Font name="System Bold" size="14.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="445.0" layoutY="248.0" text="Пользователь:">
+                           <font>
+                              <Font name="System Bold" size="14.0" />
+                           </font>
+                        </Label>
+                        <TableView fx:id="mainTableBikeRentBike" layoutX="9.0" layoutY="6.0" prefHeight="238.0" prefWidth="422.0">
+                          <columns>
+                              <TableColumn fx:id="idBikeRentBike" prefWidth="22.39999485015869" text="Id" />
+                            <TableColumn fx:id="nameBikeRentBike" prefWidth="90.40002059936523" text="Название" />
+                            <TableColumn fx:id="configBikeRentBike" prefWidth="75.0" text="Конфигурация" />
+                              <TableColumn fx:id="shopBikeRentBike" prefWidth="93.60005187988281" text="Магазин" />
+                              <TableColumn fx:id="priceBikeRentBike" prefWidth="48.79998779296875" text="Цена" />
+                          </columns>
+                           <columnResizePolicy>
+                              <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                           </columnResizePolicy>
+                        </TableView>
+                        <TableView fx:id="mainTableUserRentBike" layoutX="443.0" layoutY="6.0" prefHeight="236.0" prefWidth="382.0">
+                           <columns>
+                              <TableColumn fx:id="idUserRentBike" prefWidth="35.20001220703125" text="Id" />
+                              <TableColumn fx:id="nameUserRentBike" prefWidth="115.20001220703125" text="Имя" />
+                              <TableColumn fx:id="passportUserRentBike" prefWidth="126.39996337890625" text="Паспорт" />
+                           </columns>
+                           <columnResizePolicy>
+                              <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                           </columnResizePolicy>
+                        </TableView>
+                        <Button fx:id="buttonAddRentBike" layoutX="323.0" layoutY="290.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="86.0" style="-fx-background-color: #ADD8E6;" text="Добавить">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Button>
+                        <Label fx:id="selectBikeRentBike" layoutX="107.0" layoutY="252.0" prefHeight="18.0" prefWidth="253.0">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="selectUserRentBike" layoutX="546.0" layoutY="249.0" prefHeight="20.0" prefWidth="277.0">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                        <Button fx:id="buttonUpdateRentBike" layoutX="419.0" layoutY="290.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="86.0" style="-fx-background-color: #ADD8E6;" text="Обновить">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Button>
+                     </children>
+                  </AnchorPane>
+            </content>
+          </Tab>
+          <Tab fx:id="closeRentBikeTab" text="Закрытие аренды">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <TableView fx:id="mainTableUserCloseRentBike" layoutX="4.0" layoutY="9.0" prefHeight="250.0" prefWidth="246.0">
+                          <columns>
+                            <TableColumn fx:id="IdUserCloseRentBike" prefWidth="24.00003147125244" text="Id" />
+                            <TableColumn fx:id="nameUserCloseRentBike" prefWidth="124.79992294311523" text="Пользователя" />
+                              <TableColumn fx:id="passportUserCloseRentBike" prefWidth="100.80006408691406" text="Паспорт" />
+                          </columns>
+                           <columnResizePolicy>
+                              <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                           </columnResizePolicy>
+                        </TableView>
+                        <Button fx:id="buttonCloseRentCloseRentBike" layoutX="298.0" layoutY="295.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="137.0" style="-fx-background-color: #ADD8E6;" text="Закрыть аренду">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Button>
+                        <TableView fx:id="mainTableBikeCloseRentBike" layoutX="258.0" layoutY="8.0" prefHeight="251.0" prefWidth="315.0">
+                           <columns>
+                              <TableColumn fx:id="IdBikeCloseRentBike" prefWidth="25.5999755859375" text="Id" />
+                              <TableColumn fx:id="nameBikeCloseRentBike" prefWidth="71.99993896484375" text="Велосипед" />
+                              <TableColumn fx:id="configBikeCloseRentBike" prefWidth="126.4000244140625" text="Конфигурация" />
+                              <TableColumn fx:id="dateBikeCloseRentBike" prefWidth="81.60003662109375" text="Дата аренды" />
+                           </columns>
+                           <columnResizePolicy>
+                              <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                           </columnResizePolicy>
+                        </TableView>
+                        <TableView fx:id="mainTableShopCloseRentBike" layoutX="580.0" layoutY="7.0" prefHeight="252.0" prefWidth="246.0">
+                           <columns>
+                              <TableColumn fx:id="IdShopCloseRentBike" prefWidth="24.00003147125244" text="Id" />
+                              <TableColumn fx:id="idShopCloseRentBike" prefWidth="86.39990234375" text="Название" />
+                              <TableColumn fx:id="addressShopCloseRentBike" prefWidth="134.400146484375" text="Адрес" />
+                           </columns>
+                           <columnResizePolicy>
+                              <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                           </columnResizePolicy>
+                        </TableView>
+                        <Label fx:id="selectResultCloseRentBike" layoutX="85.0" layoutY="270.0" prefHeight="20.0" prefWidth="734.0">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="14.0" layoutY="270.0" text="Результат:">
+                           <font>
+                              <Font name="System Bold" size="14.0" />
+                           </font>
+                        </Label>
+                        <Button fx:id="buttonUpdateCloseRentBike" layoutX="444.0" layoutY="295.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="86.0" style="-fx-background-color: #ADD8E6;" text="Обновить">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Button>
+                     </children>
+                  </AnchorPane>
+            </content>
+          </Tab>
+            <Tab fx:id="userTableTab" text="Посмотреть пользователей">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <Button fx:id="buttonUpdateUserTable" layoutX="371.0" layoutY="294.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="86.0" style="-fx-background-color: #ADD8E6;" text="Обновить">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Button>
+                        <TableView fx:id="mainTableUser" layoutX="7.0" layoutY="5.0" prefHeight="282.0" prefWidth="814.0">
+                          <columns>
+                            <TableColumn fx:id="idUserTable" prefWidth="29.60003662109375" text="Id" />
+                            <TableColumn fx:id="nameUserTable" prefWidth="209.5999755859375" text="Имя" />
+                              <TableColumn fx:id="passportUserTable" prefWidth="137.60003662109375" text="Пасспорт" />
+                              <TableColumn fx:id="addressUserTable" prefWidth="247.20001220703125" text="Адрес проживания" />
+                              <TableColumn fx:id="statusUserTable" prefWidth="78.39996337890625" text="Статус" />
+                          </columns>
+                           <columnResizePolicy>
+                              <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                           </columnResizePolicy>
+                        </TableView>
+                     </children>
+                  </AnchorPane>
+               </content>
+            </Tab>
+            <Tab fx:id="bikeTableTab" text="Посмотреть велосипеды">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <Button fx:id="buttonUpdateBikeTable" layoutX="371.0" layoutY="294.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="86.0" style="-fx-background-color: #ADD8E6;" text="Обновить">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Button>
+                        <TableView fx:id="mainTableBike" editable="true" layoutX="6.0" layoutY="5.0" prefHeight="282.0" prefWidth="816.0">
+                           <columns>
+                              <TableColumn fx:id="idBikeTable" prefWidth="20.80001735687256" text="Id" />
+                              <TableColumn fx:id="nameBikeTable" prefWidth="99.99997329711914" text="Название" />
+                              <TableColumn fx:id="configBikeTable" prefWidth="224.7999725341797" text="Комплектация" />
+                              <TableColumn fx:id="statusBikeTable" prefWidth="48.800048828125" text="Статус" />
+                              <TableColumn fx:id="priceBikeTable" prefWidth="68.800048828125" text="Цена в час" />
+                              <TableColumn fx:id="additionalInfoBikeTable" prefWidth="191.20001220703125" text="Дополнительная информация" />
+                           </columns>
+                           <columnResizePolicy>
+                              <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                           </columnResizePolicy>
+                        </TableView>
+                     </children>
+                  </AnchorPane>
+               </content>
+            </Tab>
+        </tabs>
+      </TabPane>
+   </children>
+</AnchorPane>
