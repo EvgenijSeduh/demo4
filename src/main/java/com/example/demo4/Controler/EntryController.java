@@ -2,6 +2,7 @@ package com.example.demo4.Controler;
 
 
 import com.example.demo4.Model.ModelAutorizateUser;
+import com.example.demo4.Model.ModelEmployeePanel;
 import com.example.demo4.Recource.Const.ConstAllTable;
 import com.example.demo4.Recource.InfoUser;
 import javafx.fxml.FXML;
@@ -49,6 +50,7 @@ public class EntryController {
                         FXMLLoader loader = new FXMLLoader();
                         try {
                             String mandat = checkMandat(infoUser);
+                            ModelEmployeePanel.setMandat(mandat);
                             if (mandat.equals("client")) {
                                 loader.setLocation(getClass().getResource("/com/example/demo4/Viev/ClientPanel.fxml"));
                                 loader.load();
@@ -68,7 +70,7 @@ public class EntryController {
                                 stage.setScene(new Scene(root));
                                 stage.show();
                             } else if (mandat.equals("super_user")) {
-                                loader.setLocation(getClass().getResource("com/example/demo4/Viev/EmployeePanel.fxml"));
+                                loader.setLocation(getClass().getResource("/com/example/demo4/Viev/AdminPanel.fxml"));
                                 loader.load();
                                 Parent root = loader.getRoot();
                                 Stage stage = new Stage();

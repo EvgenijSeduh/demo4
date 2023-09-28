@@ -203,9 +203,9 @@ public class EmployeePanelController extends ConstAllTable {
 
         mainTableUserCloseRentBike.setItems(userTableListCloseRentBike);//пользователи сдающие велосипеды
 
-        idShopCloseRentBike.setCellValueFactory(new PropertyValueFactory<Shop,Integer>("id"));
-        idShopNameCloseRentBike.setCellValueFactory(new PropertyValueFactory<Shop,String>("name"));
-        addressShopCloseRentBike.setCellValueFactory(new PropertyValueFactory<Shop,String>("address"));
+        idShopCloseRentBike.setCellValueFactory(new PropertyValueFactory<Shop, Integer>("id"));
+        idShopNameCloseRentBike.setCellValueFactory(new PropertyValueFactory<Shop, String>("name"));
+        addressShopCloseRentBike.setCellValueFactory(new PropertyValueFactory<Shop, String>("address"));
 
         mainTableShopCloseRentBike.setItems(shopsTableListCloseRentBike);//магазины в которые можно сдать
         // ------------------------------------
@@ -293,68 +293,107 @@ public class EmployeePanelController extends ConstAllTable {
                 bikeTableListCloseRentBike.clear();
                 ShortUser user = mainTableUserCloseRentBike.getSelectionModel().getSelectedItems().get(0);
                 userCloseRent.set(user);
-                getBikeRentedByUserCloseRentBike(user,bikeTableListCloseRentBike);
+                getBikeRentedByUserCloseRentBike(user, bikeTableListCloseRentBike);
                 userSelect.set("Пользователь " + user.getName() + "(id = " + user.getId() + ")");
                 AllSelectedCloseRent.set(userSelect.get() + bikeSelect.get() + shopSelect.get());
                 selectResultCloseRentBike.setText(AllSelectedCloseRent.get());
-            }
-            else{
+            } else {
                 bikeTableListCloseRentBike.clear();
             }
         });
 
-       mainTableBikeCloseRentBike.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-           if(newValue !=null){
-               Bicycle bike = mainTableBikeCloseRentBike.getSelectionModel().getSelectedItem();
-               bikeCloseRent.set(bike);
-               bikeSelect.set(" возвращает велосипед " + bike.getName() + "(id = " + bike.getId() + ")");
-               AllSelectedCloseRent.set(userSelect.get() + bikeSelect.get() + shopSelect.get());
-               selectResultCloseRentBike.setText(AllSelectedCloseRent.get());
-           }
-       });
+        buttonExit.setOnAction(event -> {
+            buttonExit.getScene().getWindow().hide();
 
-       mainTableShopCloseRentBike.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-           if(newValue != null){
-               Shop shop = mainTableShopCloseRentBike.getSelectionModel().getSelectedItem();
-               shopCloseRent.set(shop);
-               shopSelect.set(" в магазин " + shop.getName() + "(id = " + shop.getId() + ")");
-               AllSelectedCloseRent.set(userSelect.get() + bikeSelect.get() + shopSelect.get());
-               selectResultCloseRentBike.setText(AllSelectedCloseRent.get());
-           }
-       });
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource("/com/example/demo4/Viev/EntryWindow.fxml"));
+            try {
+                loader.load();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            Parent root = loader.getRoot();
+            Stage stage = new Stage();
+            stage.setTitle("Авторизация");
+            stage.setResizable(false);
+            stage.setScene(new Scene(root));
+            stage.show();
+        });
 
-       buttonUpdateCloseRentBike.setOnAction(event -> {
-           updateShortUserTable(userTableListCloseRentBike);
-           updateShopsInfo(shopsTableListCloseRentBike);
-           bikeTableListCloseRentBike.clear();
-           shopSelect.set("");
-           userSelect.set("");
-           bikeSelect.set("");
-           AllSelectedCloseRent.set("");
+        buttonProfile.setOnAction(event -> {
+            buttonProfile.getScene().getWindow().hide();
 
-       });
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource("/com/example/demo4/Viev/ProfilePanel.fxml"));
+            try {
+                loader.load();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            Parent root = loader.getRoot();
+            Stage stage = new Stage();
+            stage.setTitle("Профиль");
+            stage.setResizable(false);
+            stage.setScene(new Scene(root));
+            stage.show();
+        });
 
-       buttonCloseRentCloseRentBike.setOnAction(event -> {
-           if(userCloseRent.get() != null && bikeCloseRent.get() != null && shopCloseRent != null){
+        mainTableBikeCloseRentBike.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                Bicycle bike = mainTableBikeCloseRentBike.getSelectionModel().getSelectedItem();
+                bikeCloseRent.set(bike);
+                bikeSelect.set(" возвращает велосипед " + bike.getName() + "(id = " + bike.getId() + ")");
+                AllSelectedCloseRent.set(userSelect.get() + bikeSelect.get() + shopSelect.get());
+                selectResultCloseRentBike.setText(AllSelectedCloseRent.get());
+            }
+        });
+
+        mainTableShopCloseRentBike.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                Shop shop = mainTableShopCloseRentBike.getSelectionModel().getSelectedItem();
+                shopCloseRent.set(shop);
+                shopSelect.set(" в магазин " + shop.getName() + "(id = " + shop.getId() + ")");
+                AllSelectedCloseRent.set(userSelect.get() + bikeSelect.get() + shopSelect.get());
+                selectResultCloseRentBike.setText(AllSelectedCloseRent.get());
+            }
+        });
+
+        buttonUpdateCloseRentBike.setOnAction(event -> {
+            updateShortUserTable(userTableListCloseRentBike);
+            updateShopsInfo(shopsTableListCloseRentBike);
+            bikeTableListCloseRentBike.clear();
+            shopSelect.set("");
+            userSelect.set("");
+            bikeSelect.set("");
+            AllSelectedCloseRent.set("");
+
+        });
+
+        buttonCloseRentCloseRentBike.setOnAction(event -> {
+            if (userCloseRent.get() != null && bikeCloseRent.get() != null && shopCloseRent != null) {
                 Alert questionCloseRent = new Alert(Alert.AlertType.INFORMATION, "Вы уверены что все правильно:\n " +
-                   "Клиент: " + userCloseRent.get().getName() + " " + userCloseRent.get().getPassport()
-                    + "\n Велосипед: " + bikeCloseRent.get().getName() + " " + bikeCloseRent.get().getConfig()
-                    + "\n Магазин: " + shopCloseRent.get().getName() + " " + shopCloseRent.get().getAddress(), ButtonType.YES, ButtonType.NO);
-               Optional<ButtonType> result = questionCloseRent.showAndWait();
-               if (result.isPresent() && result.get() == ButtonType.YES) {
-                   ModelEmployeePanel modelEmployeePanel = new ModelEmployeePanel();
-                   shopSelect.set("");
-                   userSelect.set("");
-                   bikeSelect.set("");
-                   AllSelectedCloseRent.set("");
-                   selectResultCloseRentBike.setText("");
-                   if(modelEmployeePanel.createCloseRent(userCloseRent.get(),bikeCloseRent.get(),shopCloseRent.get())){
-                       Alert bikeAdd = new Alert(Alert.AlertType.INFORMATION, "Запись успешно добавлена", ButtonType.OK);
-                       bikeAdd.showAndWait();
-                   }else{modelEmployeePanel.errorAlert();}
-               }
-           }else{Alert emptyBikeRent = new Alert(Alert.AlertType.ERROR, "Заполните все поля", ButtonType.OK);}
-       });
+                        "Клиент: " + userCloseRent.get().getName() + " " + userCloseRent.get().getPassport()
+                        + "\n Велосипед: " + bikeCloseRent.get().getName() + " " + bikeCloseRent.get().getConfig()
+                        + "\n Магазин: " + shopCloseRent.get().getName() + " " + shopCloseRent.get().getAddress(), ButtonType.YES, ButtonType.NO);
+                Optional<ButtonType> result = questionCloseRent.showAndWait();
+                if (result.isPresent() && result.get() == ButtonType.YES) {
+                    ModelEmployeePanel modelEmployeePanel = new ModelEmployeePanel();
+                    shopSelect.set("");
+                    userSelect.set("");
+                    bikeSelect.set("");
+                    AllSelectedCloseRent.set("");
+                    selectResultCloseRentBike.setText("");
+                    if (modelEmployeePanel.createCloseRent(userCloseRent.get(), bikeCloseRent.get(), shopCloseRent.get())) {
+                        Alert bikeAdd = new Alert(Alert.AlertType.INFORMATION, "Запись успешно добавлена", ButtonType.OK);
+                        bikeAdd.showAndWait();
+                    } else {
+                        modelEmployeePanel.errorAlert();
+                    }
+                }
+            } else {
+                Alert emptyBikeRent = new Alert(Alert.AlertType.ERROR, "Заполните все поля", ButtonType.OK);
+            }
+        });
 
         mainTableUserRentBike.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
@@ -381,8 +420,9 @@ public class EmployeePanelController extends ConstAllTable {
                             bikeTableListRentBike.clear();
                             updateShortUserTable(userTableListRentBike);
                             getFreeBikeInfo(bikeTableListRentBike);
+                        } else {
+                            modelEmployeePanel.errorAlert();
                         }
-                        else{modelEmployeePanel.errorAlert();}
 
                     }
                 } else {
@@ -400,18 +440,27 @@ public class EmployeePanelController extends ConstAllTable {
             buttonExit.getScene().getWindow().hide();
 
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(getClass().getResource("/com/example/demo4/Viev/EntryWindow.fxml"));
             try {
+                String title;
+                if (!(ModelEmployeePanel.getMandat().equals("super_user"))) {
+                    loader.setLocation(getClass().getResource("/com/example/demo4/Viev/EntryWindow.fxml"));
+                    title = "Авторизация";
+                }
+                else{
+                    loader.setLocation(getClass().getResource("/com/example/demo4/Viev/AdminPanel.fxml"));
+                    title = "Панель администратора";
+                }
+
                 loader.load();
+                Parent root = loader.getRoot();
+                Stage stage = new Stage();
+                stage.setTitle(title);
+                stage.setResizable(false);
+                stage.setScene(new Scene(root));
+                stage.show();
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-            Parent root = loader.getRoot();
-            Stage stage = new Stage();
-            stage.setTitle("Авторизация");
-            stage.setResizable(false);
-            stage.setScene(new Scene(root));
-            stage.show();
         });
     }
 

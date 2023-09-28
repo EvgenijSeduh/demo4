@@ -2,6 +2,7 @@ package com.example.demo4.Model;
 
 import com.example.demo4.Recource.Bicycle;
 import com.example.demo4.Recource.Const.ConstAllTable;
+import com.example.demo4.Recource.InfoUser;
 import com.example.demo4.Recource.Shop;
 import com.example.demo4.Recource.ShortUser;
 import javafx.scene.control.Alert;
@@ -13,6 +14,16 @@ import java.time.LocalDate;
 
 
 public class ModelEmployeePanel extends ConstAllTable {
+    private static String mandat;
+
+    public static String getMandat() {
+        return mandat;
+    }
+
+    public static void setMandat(String mandat) {
+        ModelEmployeePanel.mandat = mandat;
+    }
+
     public Connection getDbConnection() throws ClassNotFoundException, SQLException {
         String connectionString = "jdbc:mysql://" + dbHost + ":" + dbPort + "/" + dbName;
 
@@ -344,5 +355,29 @@ public class ModelEmployeePanel extends ConstAllTable {
             e.printStackTrace();
         }
         return result;
+    }
+
+    public boolean checkUser(InfoUser infoUser) throws SQLException, ClassNotFoundException {
+        try {
+            String searchUser = "SELECT COUNT(*)FROM " + AUTORIZATIONS_TABLE
+                    + " WHERE login = ? AND password = ?;";
+
+            PreparedStatement prSt = getDbConnection().prepareStatement(searchUser);
+            prSt.setString(1, infoUser.getLogin());
+            prSt.setBytes(2, infoUser.getPassword());
+
+            ResultSet autorizationDateUser = prSt.executeQuery();
+            autorizationDateUser.next();
+            if(autorizationDateUser.getInt("COUNT(*)") >=1 )
+                return true;
+            else
+                return false;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 }
