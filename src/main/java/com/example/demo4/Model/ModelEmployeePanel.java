@@ -152,30 +152,36 @@ public class ModelEmployeePanel extends ConstAllTable {
     public boolean createCloseRent(ShortUser user, Bicycle bike, Shop shop) {
         try {
             String createCloseRent = "INSERT INTO " + RANTING_TABLE + " ("
-                    + RANTING_IDBIKES + RANTING_IDSHOPS + RANTING_DATEDELIVERY
+                    + RANTING_IDBIKES + ", " + RANTING_IDSHOPS + ", " + RANTING_DATEDELIVERY
                     + ") VALUES ( ?, ?, ?);";
             String createConnectionWithReservationAndRanting = "INSERT INTO "
                     + RENTS_TABLE + " (" + RENTS_IDRATINGS + ", " + RENTS_IDRESERVATION
                     + ") VALUES (?, ?)";
-            String changeStatusBike = "UPDATE " + BIKE_TABLE + " SET "
-                    + BIKE_STATUS + " = ? WHERE " + BIKE_ID + " = ?;";
+            String changeStatusAndAddressBike = "UPDATE " + BIKE_TABLE + " SET "
+                    + BIKE_STATUS + " = ?," + BIKE_IDSHOS + " = ?" + " WHERE " + BIKE_ID + " = ?;";
 
-            PreparedStatement prSt = getDbConnection().prepareStatement(createCloseRent);
+            PreparedStatement prSt = getDbConnection().prepareStatement(createCloseRent, Statement.RETURN_GENERATED_KEYS);
             prSt.setInt(1, bike.getId());
             prSt.setInt(2, shop.getId());
             prSt.setDate(3, Date.valueOf(LocalDate.now()));
 
-            int idRanting = prSt.executeUpdate();
+            System.out.println(prSt.toString());
+
+            prSt.executeUpdate();
+            ResultSet idRanting = prSt.getGeneratedKeys();
+            idRanting.next();
+            System.out.println(idRanting.getMetaData());
 
             prSt = getDbConnection().prepareStatement(createConnectionWithReservationAndRanting);
-            prSt.setInt(1, idRanting);
+            prSt.setInt(1, idRanting.getInt(1));
             prSt.setInt(2, getReservation(user, bike, shop).getInt(RESERVATION_ID));
 
             prSt.executeUpdate();
 
-            prSt = getDbConnection().prepareStatement(changeStatusBike);
+            prSt = getDbConnection().prepareStatement(changeStatusAndAddressBike);
             prSt.setString(1, "free");
-            prSt.setInt(2, bike.getId());
+            prSt.setInt(2,shop.getId());
+            prSt.setInt(3, bike.getId());
 
             prSt.executeUpdate();
 
@@ -194,16 +200,24 @@ public class ModelEmployeePanel extends ConstAllTable {
     public ResultSet getReservation(ShortUser user, Bicycle bike,Shop shop) throws SQLException {
         ResultSet result = null;
         try{
-            String getIdReservation = "SELECT * FROM " + RESERVATION_TABLE + " WHERE "
-                    + RESERVATION_IDSHOPS + " = ? AND "
-                    + RESERVATION_IDBIKES + " = ? AND "
-                    + RESERVATION_IDUSER + " = ? AND "
-                    + RESERVATION_DATERECEIPT + " = (STR_TO_DATE(?, '%Y-%m-%d'))";
+            String getIdReservation = "SELECT " + RESERVATION_TABLE + "." +RESERVATION_ID
+                    + " FROM " + RESERVATION_TABLE
+                    + " JOIN " + SHOPS_TABLE + " ON "
+                    + RESERVATION_TABLE + "." +RESERVATION_IDSHOPS + " = "
+                    + SHOPS_TABLE + "." + SHOPS_ID
+                    + " WHERE "
+                    + SHOPS_TABLE + "." + SHOPS_ID + " = (SELECT " + BIKE_IDSHOS + " FROM " + BIKE_TABLE
+                    + " WHERE " + BIKE_ID + " = ?" + ") AND "
+                    + RESERVATION_TABLE + "." + RESERVATION_IDBIKES + " = ? AND "
+                    + RESERVATION_TABLE + "." + RESERVATION_IDUSER + " = ? AND "
+                    + RESERVATION_TABLE + "." + RESERVATION_DATERECEIPT + " = (STR_TO_DATE(?, '%Y-%m-%d'))";
             PreparedStatement prSt = getDbConnection().prepareStatement(getIdReservation);
-            prSt.setInt(1, shop.getId());
+            prSt.setInt(1, bike.getId());
             prSt.setInt(2, bike.getId());
             prSt.setInt(3, user.getId());
             prSt.setString(4, bike.getAdditionalInfo());
+
+            System.out.println(prSt.toString());
 
             result = prSt.executeQuery();
         } catch (SQLException e) {
@@ -249,6 +263,7 @@ public class ModelEmployeePanel extends ConstAllTable {
             prSt.setInt(2, bike.getId());
 
             prSt.executeUpdate();
+
         } catch (SQLException e) {
             errorAlert();
             e.printStackTrace();
@@ -264,6 +279,7 @@ public class ModelEmployeePanel extends ConstAllTable {
 
     public void errorAlert() {
         Alert error = new Alert(Alert.AlertType.ERROR, "Ошибка при работе с базой данных", ButtonType.OK);
+        error.showAndWait();
     }
 
     public ResultSet getShopsInfo() throws SQLException, ClassNotFoundException {

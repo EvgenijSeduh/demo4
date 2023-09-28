@@ -94,7 +94,7 @@
                      <children>
                         <TableView fx:id="mainTableUserCloseRentBike" layoutX="4.0" layoutY="9.0" prefHeight="250.0" prefWidth="246.0">
                           <columns>
-                            <TableColumn fx:id="IdUserCloseRentBike" prefWidth="24.00003147125244" text="Id" />
+                            <TableColumn fx:id="idUserCloseRentBike" prefWidth="24.00003147125244" text="Id" />
                             <TableColumn fx:id="nameUserCloseRentBike" prefWidth="124.79992294311523" text="Пользователя" />
                               <TableColumn fx:id="passportUserCloseRentBike" prefWidth="100.80006408691406" text="Паспорт" />
                           </columns>
@@ -109,7 +109,7 @@
                         </Button>
                         <TableView fx:id="mainTableBikeCloseRentBike" layoutX="258.0" layoutY="8.0" prefHeight="251.0" prefWidth="315.0">
                            <columns>
-                              <TableColumn fx:id="IdBikeCloseRentBike" prefWidth="25.5999755859375" text="Id" />
+                              <TableColumn fx:id="idBikeCloseRentBike" prefWidth="25.5999755859375" text="Id" />
                               <TableColumn fx:id="nameBikeCloseRentBike" prefWidth="71.99993896484375" text="Велосипед" />
                               <TableColumn fx:id="configBikeCloseRentBike" prefWidth="126.4000244140625" text="Конфигурация" />
                               <TableColumn fx:id="dateBikeCloseRentBike" prefWidth="81.60003662109375" text="Дата аренды" />
@@ -120,7 +120,7 @@
                         </TableView>
                         <TableView fx:id="mainTableShopCloseRentBike" layoutX="580.0" layoutY="7.0" prefHeight="252.0" prefWidth="246.0">
                            <columns>
-                              <TableColumn fx:id="IdShopCloseRentBike" prefWidth="24.00003147125244" text="Id" />
+                              <TableColumn fx:id="idShopCloseRentBike" prefWidth="24.00003147125244" text="Id" />
                               <TableColumn fx:id="idShopCloseRentBike" prefWidth="86.39990234375" text="Название" />
                               <TableColumn fx:id="addressShopCloseRentBike" prefWidth="134.400146484375" text="Адрес" />
                            </columns>

@@ -284,9 +284,9 @@ public class EmployeePanelController extends ConstAllTable {
         AtomicReference<String> shopSelect = new AtomicReference<>("");
         AtomicReference<String> AllSelectedCloseRent = new AtomicReference<>("");
 
-        AtomicReference<ShortUser> userCloseRent = null;
-        AtomicReference<Bicycle> bikeCloseRent = null;
-        AtomicReference<Shop> shopCloseRent = null;
+        AtomicReference<ShortUser> userCloseRent = new AtomicReference<>();
+        AtomicReference<Bicycle> bikeCloseRent = new AtomicReference<>();
+        AtomicReference<Shop> shopCloseRent = new AtomicReference<>();
 
         mainTableUserCloseRentBike.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
@@ -327,6 +327,10 @@ public class EmployeePanelController extends ConstAllTable {
            updateShortUserTable(userTableListCloseRentBike);
            updateShopsInfo(shopsTableListCloseRentBike);
            bikeTableListCloseRentBike.clear();
+           shopSelect.set("");
+           userSelect.set("");
+           bikeSelect.set("");
+           AllSelectedCloseRent.set("");
 
        });
 
@@ -339,6 +343,11 @@ public class EmployeePanelController extends ConstAllTable {
                Optional<ButtonType> result = questionCloseRent.showAndWait();
                if (result.isPresent() && result.get() == ButtonType.YES) {
                    ModelEmployeePanel modelEmployeePanel = new ModelEmployeePanel();
+                   shopSelect.set("");
+                   userSelect.set("");
+                   bikeSelect.set("");
+                   AllSelectedCloseRent.set("");
+                   selectResultCloseRentBike.setText("");
                    if(modelEmployeePanel.createCloseRent(userCloseRent.get(),bikeCloseRent.get(),shopCloseRent.get())){
                        Alert bikeAdd = new Alert(Alert.AlertType.INFORMATION, "Запись успешно добавлена", ButtonType.OK);
                        bikeAdd.showAndWait();
@@ -368,6 +377,7 @@ public class EmployeePanelController extends ConstAllTable {
                             Alert bikeAdd = new Alert(Alert.AlertType.INFORMATION, "Запись успешно добавлена", ButtonType.OK);
                             bikeAdd.showAndWait();
 
+                            selectBikeRentBike.setText("");
                             bikeTableListRentBike.clear();
                             updateShortUserTable(userTableListRentBike);
                             getFreeBikeInfo(bikeTableListRentBike);
@@ -377,6 +387,7 @@ public class EmployeePanelController extends ConstAllTable {
                     }
                 } else {
                     Alert emptyBikeRent = new Alert(Alert.AlertType.ERROR, "Выберите велосипед для аренды", ButtonType.OK);
+                    emptyBikeRent.showAndWait();
                 }
             } catch (SQLException e) {
                 throw new RuntimeException(e);
@@ -408,6 +419,7 @@ public class EmployeePanelController extends ConstAllTable {
         try {
             ModelEmployeePanel modelEmployeePanel = new ModelEmployeePanel();
             ResultSet rentBikeInfo = modelEmployeePanel.getBikeRentedByUserCloseRentBike(user);
+            bikeTableListCloseRentBike.clear();
             while (rentBikeInfo.next()) {
                 bikeTableListCloseRentBike.add(new Bicycle(
                         rentBikeInfo.getInt(BIKE_ID),

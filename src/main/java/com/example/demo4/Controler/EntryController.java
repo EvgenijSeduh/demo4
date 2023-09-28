@@ -48,7 +48,8 @@ public class EntryController {
 
                         FXMLLoader loader = new FXMLLoader();
                         try {
-                            if (checkMandat(infoUser).equals("client")) {
+                            String mandat = checkMandat(infoUser);
+                            if (mandat.equals("client")) {
                                 loader.setLocation(getClass().getResource("/com/example/demo4/Viev/ClientPanel.fxml"));
                                 loader.load();
                                 Parent root = loader.getRoot();
@@ -57,7 +58,7 @@ public class EntryController {
                                 stage.setResizable(false);
                                 stage.setScene(new Scene(root));
                                 stage.show();
-                            } else if (checkMandat(infoUser).equals("employee")) {
+                            } else if (mandat.equals("employee")) {
                                 loader.setLocation(getClass().getResource("/com/example/demo4/Viev/EmployeePanel.fxml"));
                                 loader.load();
                                 Parent root = loader.getRoot();
@@ -66,7 +67,7 @@ public class EntryController {
                                 stage.setResizable(false);
                                 stage.setScene(new Scene(root));
                                 stage.show();
-                            } else if (checkMandat(infoUser).equals("super_user")) {
+                            } else if (mandat.equals("super_user")) {
                                 loader.setLocation(getClass().getResource("com/example/demo4/Viev/EmployeePanel.fxml"));
                                 loader.load();
                                 Parent root = loader.getRoot();
