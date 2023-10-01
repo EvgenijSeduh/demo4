@@ -1,10 +1,7 @@
 package com.example.demo4.Model;
 
-import com.example.demo4.Recource.Bicycle;
+import com.example.demo4.Recource.*;
 import com.example.demo4.Recource.Const.ConstAllTable;
-import com.example.demo4.Recource.InfoUser;
-import com.example.demo4.Recource.Shop;
-import com.example.demo4.Recource.ShortUser;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 
@@ -16,6 +13,10 @@ import java.time.LocalDate;
 public class ModelEmployeePanel extends ConstAllTable {
     private static String mandat;
 
+    public ModelEmployeePanel() throws SQLException, ClassNotFoundException {
+    }
+
+
     public static String getMandat() {
         return mandat;
     }
@@ -24,16 +25,7 @@ public class ModelEmployeePanel extends ConstAllTable {
         ModelEmployeePanel.mandat = mandat;
     }
 
-    public Connection getDbConnection() throws ClassNotFoundException, SQLException {
-        String connectionString = "jdbc:mysql://" + dbHost + ":" + dbPort + "/" + dbName;
-
-
-        Class.forName("com.mysql.cj.jdbc.Driver");
-
-        Connection dbConnection = DriverManager.getConnection(connectionString, dbUser, dbPass);
-
-        return dbConnection;
-    }
+    DataBaseHandler dataBaseHandler = DataBaseHandler.getInstance();
 
     public ResultSet getBusyBikeInfo() throws SQLException, ClassNotFoundException {
         ResultSet result = null;
@@ -57,13 +49,10 @@ public class ModelEmployeePanel extends ConstAllTable {
 
 
             System.out.println(getInfoBusyBike);
-            PreparedStatement prSt = getDbConnection().prepareStatement(getInfoBusyBike);
+            PreparedStatement prSt = dataBaseHandler.getConnection().prepareStatement(getInfoBusyBike);
             prSt.setString(1, "busy");
             result = prSt.executeQuery();
         } catch (SQLException e) {
-            errorAlert();
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
             errorAlert();
             e.printStackTrace();
         }
@@ -87,13 +76,10 @@ public class ModelEmployeePanel extends ConstAllTable {
                     + SHOPS_TABLE + "." + SHOPS_ID
                     + " WHERE " + BIKE_TABLE + "." + BIKE_STATUS + " = ?;";
 
-            PreparedStatement prSt = getDbConnection().prepareStatement(getInfoFreeBike);
+            PreparedStatement prSt = dataBaseHandler.getConnection().prepareStatement(getInfoFreeBike);
             prSt.setString(1, "free");
             result = prSt.executeQuery();
         } catch (SQLException e) {
-            errorAlert();
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
             errorAlert();
             e.printStackTrace();
         }
@@ -120,12 +106,9 @@ public class ModelEmployeePanel extends ConstAllTable {
                     + PASSPORT_TABLE + "." + PASSPORT_ID;
             System.out.println(getInfoUser);
 
-            PreparedStatement prSt = getDbConnection().prepareStatement(getInfoUser);
+            PreparedStatement prSt = dataBaseHandler.getConnection().prepareStatement(getInfoUser);
             result = prSt.executeQuery();
         } catch (SQLException e) {
-            errorAlert();
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
             errorAlert();
             e.printStackTrace();
         }
@@ -147,13 +130,10 @@ public class ModelEmployeePanel extends ConstAllTable {
                     + USER_MANDAT + " = ?";
             System.out.println(getInfoUser);
 
-            PreparedStatement prSt = getDbConnection().prepareStatement(getInfoUser);
+            PreparedStatement prSt = dataBaseHandler.getConnection().prepareStatement(getInfoUser);
             prSt.setString(1, "client");
             result = prSt.executeQuery();
         } catch (SQLException e) {
-            errorAlert();
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
             errorAlert();
             e.printStackTrace();
         }
@@ -171,7 +151,7 @@ public class ModelEmployeePanel extends ConstAllTable {
             String changeStatusAndAddressBike = "UPDATE " + BIKE_TABLE + " SET "
                     + BIKE_STATUS + " = ?," + BIKE_IDSHOS + " = ?" + " WHERE " + BIKE_ID + " = ?;";
 
-            PreparedStatement prSt = getDbConnection().prepareStatement(createCloseRent, Statement.RETURN_GENERATED_KEYS);
+            PreparedStatement prSt = dataBaseHandler.getConnection().prepareStatement(createCloseRent, Statement.RETURN_GENERATED_KEYS);
             prSt.setInt(1, bike.getId());
             prSt.setInt(2, shop.getId());
             prSt.setDate(3, Date.valueOf(LocalDate.now()));
@@ -183,13 +163,13 @@ public class ModelEmployeePanel extends ConstAllTable {
             idRanting.next();
             System.out.println(idRanting.getMetaData());
 
-            prSt = getDbConnection().prepareStatement(createConnectionWithReservationAndRanting);
+            prSt = dataBaseHandler.getConnection().prepareStatement(createConnectionWithReservationAndRanting);
             prSt.setInt(1, idRanting.getInt(1));
             prSt.setInt(2, getReservation(user, bike, shop).getInt(RESERVATION_ID));
 
             prSt.executeUpdate();
 
-            prSt = getDbConnection().prepareStatement(changeStatusAndAddressBike);
+            prSt = dataBaseHandler.getConnection().prepareStatement(changeStatusAndAddressBike);
             prSt.setString(1, "free");
             prSt.setInt(2,shop.getId());
             prSt.setInt(3, bike.getId());
@@ -197,10 +177,6 @@ public class ModelEmployeePanel extends ConstAllTable {
             prSt.executeUpdate();
 
         } catch (SQLException e) {
-            errorAlert();
-            e.printStackTrace();
-            return false;
-        } catch (ClassNotFoundException e) {
             errorAlert();
             e.printStackTrace();
             return false;
@@ -222,7 +198,7 @@ public class ModelEmployeePanel extends ConstAllTable {
                     + RESERVATION_TABLE + "." + RESERVATION_IDBIKES + " = ? AND "
                     + RESERVATION_TABLE + "." + RESERVATION_IDUSER + " = ? AND "
                     + RESERVATION_TABLE + "." + RESERVATION_DATERECEIPT + " = (STR_TO_DATE(?, '%Y-%m-%d'))";
-            PreparedStatement prSt = getDbConnection().prepareStatement(getIdReservation);
+            PreparedStatement prSt = dataBaseHandler.getConnection().prepareStatement(getIdReservation);
             prSt.setInt(1, bike.getId());
             prSt.setInt(2, bike.getId());
             prSt.setInt(3, user.getId());
@@ -232,8 +208,6 @@ public class ModelEmployeePanel extends ConstAllTable {
 
             result = prSt.executeQuery();
         } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
         result.next();
@@ -253,14 +227,14 @@ public class ModelEmployeePanel extends ConstAllTable {
                     + BIKE_STATUS + " = ? WHERE " + BIKE_ID + " = ?;";
 
 
-            PreparedStatement prSt = getDbConnection().prepareStatement(getIdShopsIntoBike);
+            PreparedStatement prSt = dataBaseHandler.getConnection().prepareStatement(getIdShopsIntoBike);
             prSt.setInt(1, bike.getId());
 
             ResultSet idShopResultSet = prSt.executeQuery();
             idShopResultSet.next();
 
 
-            prSt = getDbConnection().prepareStatement(createRent);
+            prSt = dataBaseHandler.getConnection().prepareStatement(createRent);
             prSt.setInt(1, bike.getId());
             prSt.setInt(2, user.getId());
             prSt.setInt(3, idShopResultSet.getInt(BIKE_IDSHOS));
@@ -269,17 +243,13 @@ public class ModelEmployeePanel extends ConstAllTable {
             prSt.executeUpdate();
 
 
-            prSt = getDbConnection().prepareStatement(changeStatusBike);
+            prSt = dataBaseHandler.getConnection().prepareStatement(changeStatusBike);
             prSt.setString(1, "busy");
             prSt.setInt(2, bike.getId());
 
             prSt.executeUpdate();
 
         } catch (SQLException e) {
-            errorAlert();
-            e.printStackTrace();
-            return false;
-        } catch (ClassNotFoundException e) {
             errorAlert();
             e.printStackTrace();
             return false;
@@ -298,12 +268,9 @@ public class ModelEmployeePanel extends ConstAllTable {
         try {
             String getShopsInfo = "SELECT * FROM " + SHOPS_TABLE;
 
-            PreparedStatement prSt = getDbConnection().prepareStatement(getShopsInfo);
+            PreparedStatement prSt = dataBaseHandler.getConnection().prepareStatement(getShopsInfo);
             result = prSt.executeQuery();
         } catch (SQLException e) {
-            errorAlert();
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
             errorAlert();
             e.printStackTrace();
         }
@@ -341,16 +308,13 @@ public class ModelEmployeePanel extends ConstAllTable {
                     + USER_TABLE + "." + USER_ID + " WHERE "
                     + USER_TABLE + "." + USER_ID + " = ?;";
             System.out.println(getRentBike);
-            PreparedStatement prSt = getDbConnection().prepareStatement(getRentBike);
+            PreparedStatement prSt = dataBaseHandler.getConnection().prepareStatement(getRentBike);
             prSt.setString(1, "busy");
             prSt.setInt(2,user.getId());
 
             result = prSt.executeQuery();
 
         } catch (SQLException e) {
-            errorAlert();
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
             errorAlert();
             e.printStackTrace();
         }
@@ -362,7 +326,7 @@ public class ModelEmployeePanel extends ConstAllTable {
             String searchUser = "SELECT COUNT(*)FROM " + AUTORIZATIONS_TABLE
                     + " WHERE login = ? AND password = ?;";
 
-            PreparedStatement prSt = getDbConnection().prepareStatement(searchUser);
+            PreparedStatement prSt = dataBaseHandler.getConnection().prepareStatement(searchUser);
             prSt.setString(1, infoUser.getLogin());
             prSt.setBytes(2, infoUser.getPassword());
 
@@ -373,9 +337,6 @@ public class ModelEmployeePanel extends ConstAllTable {
             else
                 return false;
         } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        } catch (ClassNotFoundException e) {
             e.printStackTrace();
             return false;
         }

@@ -1,44 +1,54 @@
 package com.example.demo4.Model;
 
 import com.example.demo4.Recource.Const.ConstAllTable;
+import com.example.demo4.Recource.DataBaseHandler;
 import com.example.demo4.Recource.InfoUser;
 
 import java.sql.*;
 
 public class ModelAutorizateUser extends ConstAllTable {
-    Connection dbConnection;
+    private static int idAutorizate;
+    private static int idUser;
+    DataBaseHandler dataBaseHandler = DataBaseHandler.getInstance();
 
-    public Connection getDbConnection() throws ClassNotFoundException, SQLException {
-        String connectionString = "jdbc:mysql://" + dbHost + ":" + dbPort + "/" + dbName;
-
-
-        Class.forName("com.mysql.cj.jdbc.Driver");
-
-        dbConnection = DriverManager.getConnection(connectionString, dbUser, dbPass);
-
-        return dbConnection;
+    public ModelAutorizateUser() throws SQLException, ClassNotFoundException {
     }
+
+    public static int getIdAutorizate() {
+        return idAutorizate;
+    }
+
+    public static void setIdAutorizate(int idAutorizate) {
+        ModelAutorizateUser.idAutorizate = idAutorizate;
+    }
+
+    public static int getIdUser() {
+        return idUser;
+    }
+
+    public static void setIdUser(int idUser) {
+        ModelAutorizateUser.idUser = idUser;
+    }
+
+
 
 
     public boolean checkUser(InfoUser infoUser) throws SQLException, ClassNotFoundException {
         try {
-            String searchUser = "SELECT COUNT(*)FROM " + AUTORIZATIONS_TABLE
+            String searchUser = "SELECT " + AUTORIZATIONS_ID + " FROM " + AUTORIZATIONS_TABLE
                     + " WHERE login = ? AND password = ?;";
 
-            PreparedStatement prSt = getDbConnection().prepareStatement(searchUser);
+            PreparedStatement prSt = dataBaseHandler.getConnection().prepareStatement(searchUser);
             prSt.setString(1, infoUser.getLogin());
             prSt.setBytes(2, infoUser.getPassword());
 
             ResultSet autorizationDateUser = prSt.executeQuery();
-            autorizationDateUser.next();
-            if(autorizationDateUser.getInt("COUNT(*)") >=1 )
+            if(autorizationDateUser.next()) {
+                setIdAutorizate(autorizationDateUser.getInt("id"));
                 return true;
-            else
+            }else
                 return false;
         } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        } catch (ClassNotFoundException e) {
             e.printStackTrace();
             return false;
         }
@@ -75,14 +85,11 @@ public class ModelAutorizateUser extends ConstAllTable {
                     + resTable + "." + USER_IDPASSPORT + " = "
                     + PASSPORT_TABLE + "." + PASSPORT_ID;
 
-            PreparedStatement prSt = getDbConnection().prepareStatement(getInfoUser);
+            PreparedStatement prSt = dataBaseHandler.getConnection().prepareStatement(getInfoUser);
 
             userInfo = prSt.executeQuery();
         }
         catch (SQLException e) {
-            e.printStackTrace();
-        }
-        catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
         return userInfo;
@@ -100,7 +107,7 @@ public class ModelAutorizateUser extends ConstAllTable {
                     + AUTORIZATIONS_TABLE + "." + AUTORIZATIONS_LOGIN + " = ?"
                     + " AND " + AUTORIZATIONS_TABLE + "." + AUTORIZATIONS_PASSWORD + " = ?";
             System.out.println(getMandatString);
-            PreparedStatement prSt = getDbConnection().prepareStatement(getMandatString);
+            PreparedStatement prSt = dataBaseHandler.getConnection().prepareStatement(getMandatString);
             prSt.setString(1, infoUser.getLogin());
             prSt.setBytes(2, infoUser.getPassword());
 
@@ -109,9 +116,6 @@ public class ModelAutorizateUser extends ConstAllTable {
             System.out.println(result.getString(USER_MANDAT));
         }
         catch (SQLException e) {
-            e.printStackTrace();
-        }
-        catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
         return result.getString(USER_MANDAT);

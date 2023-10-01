@@ -1,6 +1,7 @@
 package com.example.demo4.Controler;
 
 import com.example.demo4.Model.AdminPanelModel;
+import com.example.demo4.Model.ModelEmployeePanel;
 import com.example.demo4.Recource.Bicycle;
 import com.example.demo4.Recource.Const.ConstAllTable;
 import com.example.demo4.Recource.Shop;
@@ -20,6 +21,7 @@ import javafx.util.StringConverter;
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Optional;
 
 public class AdminPanelController extends ConstAllTable {
 
@@ -31,9 +33,6 @@ public class AdminPanelController extends ConstAllTable {
 
     @FXML
     private Button buttonAddBike;
-
-    @FXML
-    private Button buttonDeleteBikeTable;
 
     @FXML
     private Button buttonDeleteUser;
@@ -51,25 +50,16 @@ public class AdminPanelController extends ConstAllTable {
     private Button buttonRaiseStatusUser;
 
     @FXML
-    private Button buttonUpdateBikeTable;
+    private Button buttonUpdateBikeAddBike;
+
+    @FXML
+    private Button buttonDeleteBikeTable;
 
     @FXML
     private Button buttonUpdateUser;
 
     @FXML
-    private Button buttonUpdateBikeAddBike;
-
-    @FXML
-    private Button buttonUpdateUserTable2;
-
-    @FXML
-    private TableColumn<?, ?> changeShopRent;
-
-    @FXML
     private TableColumn<Bicycle, String> configBikeTable;
-
-    @FXML
-    private TableColumn<?, ?> idBikeRent;
 
     @FXML
     private TableColumn<Bicycle, Integer> idBikeTable;
@@ -81,16 +71,10 @@ public class AdminPanelController extends ConstAllTable {
     private TableView<Bicycle> mainTableBike;
 
     @FXML
-    private TableView<?> mainTableRent;
-
-    @FXML
     private TableView<User> mainTableUser;
 
     @FXML
     private TextField modelFromAdd;
-
-    @FXML
-    private TableColumn<?, ?> nameBikeRent;
 
     @FXML
     private TableColumn<Bicycle, String> nameBikeTable;
@@ -114,7 +98,7 @@ public class AdminPanelController extends ConstAllTable {
     private TextField priceForAdd;
 
     @FXML
-    private TableColumn<?, ?> sourceShopRent;
+    private ComboBox<Shop> shopListFromAdd;
 
     @FXML
     private TableColumn<Bicycle, String> statusBikeTable;
@@ -123,16 +107,8 @@ public class AdminPanelController extends ConstAllTable {
     private TableColumn<User, String> statusUser;
 
     @FXML
-    private TableColumn<?, ?> termRent;
-
-    @FXML
     private TextField typeFromAdd;
 
-    @FXML
-    private TableColumn<?, ?> userRent;
-
-    @FXML
-    private ComboBox<Shop> shopListFromAdd;
 
     @FXML
     void initialize() throws SQLException, ClassNotFoundException {
@@ -147,12 +123,12 @@ public class AdminPanelController extends ConstAllTable {
 
         mainTableUser.setItems(userTableListUserTable);//просмотр всех пользователей
 
-        idBikeTable.setCellValueFactory(new PropertyValueFactory<Bicycle,Integer>("id"));
-        nameBikeTable.setCellValueFactory(new PropertyValueFactory<Bicycle,String>("name"));
-        configBikeTable.setCellValueFactory(new PropertyValueFactory<Bicycle,String>("config"));
-        statusBikeTable.setCellValueFactory(new PropertyValueFactory<Bicycle,String>("status"));
-        priceBikeTable.setCellValueFactory(new PropertyValueFactory<Bicycle,Integer>("price"));
-        additionalInfoBikeTable.setCellValueFactory(new PropertyValueFactory<Bicycle,String>("additionalInfo"));
+        idBikeTable.setCellValueFactory(new PropertyValueFactory<Bicycle, Integer>("id"));
+        nameBikeTable.setCellValueFactory(new PropertyValueFactory<Bicycle, String>("name"));
+        configBikeTable.setCellValueFactory(new PropertyValueFactory<Bicycle, String>("config"));
+        statusBikeTable.setCellValueFactory(new PropertyValueFactory<Bicycle, String>("status"));
+        priceBikeTable.setCellValueFactory(new PropertyValueFactory<Bicycle, Integer>("price"));
+        additionalInfoBikeTable.setCellValueFactory(new PropertyValueFactory<Bicycle, String>("additionalInfo"));
 //
         mainTableBike.setItems(bikeList);
 
@@ -182,21 +158,26 @@ public class AdminPanelController extends ConstAllTable {
 
                 int selectedShopId = shopListFromAdd.getValue().getId();
 
-                if (addBike(nameFromAdd.getText().trim(), typeFromAdd.getText().trim(),
-                        modelFromAdd.getText().trim(), numbergearForAdd.getText().trim(),
-                        priceForAdd.getText().trim(), selectedShopId)) {
+                try {
+                    if (addBike(nameFromAdd.getText().trim(), typeFromAdd.getText().trim(),
+                            modelFromAdd.getText().trim(), numbergearForAdd.getText().trim(),
+                            priceForAdd.getText().trim(), selectedShopId)) {
 
 
-                    Alert doneAdd = new Alert(Alert.AlertType.INFORMATION, "Запись добавлена", ButtonType.OK);
-                    updateBikeTable(bikeList);
-                    doneAdd.showAndWait();
-                } else {
-                    Alert errorAdd = new Alert(Alert.AlertType.ERROR, "Запись не была добавлена", ButtonType.OK);
-                    errorAdd.showAndWait();
+                        Alert doneAdd = new Alert(Alert.AlertType.INFORMATION, "Запись добавлена", ButtonType.OK);
+                        updateBikeTable(bikeList);
+                        doneAdd.showAndWait();
+                    } else {
+                        Alert errorAdd = new Alert(Alert.AlertType.ERROR, "Запись не была добавлена", ButtonType.OK);
+                        errorAdd.showAndWait();
+                    }
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                } catch (ClassNotFoundException e) {
+                    throw new RuntimeException(e);
                 }
-            }
-            else{
-                Alert emptyField = new Alert(Alert.AlertType.ERROR,"Заполните все поля", ButtonType.OK);
+            } else {
+                Alert emptyField = new Alert(Alert.AlertType.ERROR, "Заполните все поля", ButtonType.OK);
                 emptyField.showAndWait();
             }
         });
@@ -205,7 +186,7 @@ public class AdminPanelController extends ConstAllTable {
             updateBikeTable(bikeList);
         });
 
-        buttonUpdateUser.setOnAction(event -> {
+        buttonDeleteBikeTable.setOnAction(event -> {
             updateUserTable(userTableListUserTable);
         });
 
@@ -262,18 +243,98 @@ public class AdminPanelController extends ConstAllTable {
             stage.setScene(new Scene(root));
             stage.show();
         });
+
+        buttonRaiseStatusUser.setOnAction(event -> {
+            User user = mainTableUser.getSelectionModel().selectedItemProperty().get();
+            if (user != null) {
+                AdminPanelModel adminPanelModel = null;
+                try {
+                    adminPanelModel = new AdminPanelModel();
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                } catch (ClassNotFoundException e) {
+                    throw new RuntimeException(e);
+                }
+                adminPanelModel.raiseStatusUser(user.getStatus(), user.getId());
+                updateUserTable(userTableListUserTable);
+            }
+        });
+
+        buttonDeleteUser.setOnAction(event -> {
+            User user = mainTableUser.getSelectionModel().selectedItemProperty().get();
+            Alert confirmationDeletion = new Alert(Alert.AlertType.WARNING, "Вы уверенены?", ButtonType.YES, ButtonType.NO);
+            Optional<ButtonType> result = confirmationDeletion.showAndWait();
+            if (result.isPresent() && result.get() == ButtonType.YES) {
+
+                try {
+                    if (deleteUser(user)) {
+                        Alert doneDelete = new Alert(Alert.AlertType.INFORMATION, "Пользователь удален", ButtonType.OK);
+                        doneDelete.showAndWait();
+                    } else {
+                        Alert errorDelete = new Alert(Alert.AlertType.ERROR, "Пользователь не был удален", ButtonType.OK);
+                        errorDelete.showAndWait();
+                    }
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                } catch (ClassNotFoundException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
+
+        buttonDeleteBikeTable.setOnAction(event -> {
+            Bicycle bike = mainTableBike.getSelectionModel().selectedItemProperty().get();
+            Alert confirmationDeletion = new Alert(Alert.AlertType.WARNING, "Вы уверенены?", ButtonType.YES, ButtonType.NO);
+            Optional<ButtonType> result = confirmationDeletion.showAndWait();
+
+            if (result.isPresent() && result.get() == ButtonType.YES) {
+                try {
+                    if (deleteBike(bike)) {
+                        Alert doneDelete = new Alert(Alert.AlertType.INFORMATION, "Велосипед удален", ButtonType.OK);
+                        doneDelete.showAndWait();
+                    } else {
+                        Alert errorDelete = new Alert(Alert.AlertType.ERROR, "Велосипед не был удален", ButtonType.OK);
+                        errorDelete.showAndWait();
+                    }
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                } catch (ClassNotFoundException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
+
+        buttonUpdateUser.setOnAction(event -> {
+            updateUserTable(userTableListUserTable);
+        });
     }
 
-    private boolean addBike(String name, String type, String model, String numbergear, String price, int idshops) {
+    private boolean deleteUser(User user) throws SQLException, ClassNotFoundException {
+        AdminPanelModel adminPanelModel = new AdminPanelModel();
+        if(ModelEmployeePanel.getMandat().equals("super_user"))
+            return adminPanelModel.deleteUser(user);
+        else{
+            Alert errorDelete = new Alert(Alert.AlertType.ERROR, "Вы не можете удалить администратора", ButtonType.OK);
+            errorDelete.showAndWait();
+            return false;
+        }
+    }
+
+    private boolean deleteBike(Bicycle bike) throws SQLException, ClassNotFoundException {
+        AdminPanelModel adminPanelModel = new AdminPanelModel();
+        return adminPanelModel.deleteBike(bike);
+    }
+
+    private boolean addBike(String name, String type, String model, String numbergear, String price, int idshops) throws SQLException, ClassNotFoundException {
         AdminPanelModel adminPanelController = new AdminPanelModel();
-        return adminPanelController.addBike(name,type,model,numbergear,price,idshops);
+        return adminPanelController.addBike(name, type, model, numbergear, price, idshops);
     }
 
-    private void getAllShops(ObservableList<Shop> allShopsList) throws SQLException {
+    private void getAllShops(ObservableList<Shop> allShopsList) throws SQLException, ClassNotFoundException {
         AdminPanelModel adminPanelController = new AdminPanelModel();
         ResultSet allShopRes = adminPanelController.getAllShops();
 
-        while(allShopRes.next()){
+        while (allShopRes.next()) {
             allShopsList.add(new Shop(
                     allShopRes.getInt(SHOPS_ID),
                     allShopRes.getString(SHOPS_NAME),
@@ -282,12 +343,12 @@ public class AdminPanelController extends ConstAllTable {
         }
     }
 
-    public void updateBikeTable(ObservableList list){
+    public void updateBikeTable(ObservableList list) {
         try {
             list.clear();
             AdminPanelModel adminPanelModel = new AdminPanelModel();
             ResultSet bikeInfo = adminPanelModel.getBusyBikeInfo();
-            while(bikeInfo.next()){
+            while (bikeInfo.next()) {
                 list.add(new Bicycle(bikeInfo.getInt(BIKE_ID),
                         bikeInfo.getString(BIKE_NAME),
                         "Модель: " + bikeInfo.getString(BIKE_MODEL) + "\nТип: " + bikeInfo.getString(BIKE_TYPE) + "\nКол-во передач: " + bikeInfo.getInt(BIKE_NUMBERGEAR),
@@ -298,7 +359,7 @@ public class AdminPanelController extends ConstAllTable {
             }
 
             bikeInfo = adminPanelModel.getFreeBikeInfo();
-            while(bikeInfo.next()){
+            while (bikeInfo.next()) {
                 list.add(new Bicycle(bikeInfo.getInt(BIKE_ID),
                         bikeInfo.getString(BIKE_NAME),
                         ("Модель: " + bikeInfo.getString(BIKE_MODEL) + "\nТип: " + bikeInfo.getString(BIKE_TYPE) + "\nКол-во передач: " + bikeInfo.getInt(BIKE_NUMBERGEAR)),

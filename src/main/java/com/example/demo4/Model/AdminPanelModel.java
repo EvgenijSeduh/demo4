@@ -1,23 +1,18 @@
 package com.example.demo4.Model;
 
+import com.example.demo4.Controler.EntryController;
+import com.example.demo4.Recource.Bicycle;
 import com.example.demo4.Recource.Const.ConstAllTable;
+import com.example.demo4.Recource.DataBaseHandler;
+import com.example.demo4.Recource.User;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 
 import java.sql.*;
 
 public class AdminPanelModel extends ConstAllTable {
-    Connection dbConnection;
-
-    public Connection getDbConnection() throws ClassNotFoundException, SQLException {
-        String connectionString = "jdbc:mysql://" + dbHost + ":" + dbPort + "/" + dbName;
-
-
-        Class.forName("com.mysql.cj.jdbc.Driver");
-
-        dbConnection = DriverManager.getConnection(connectionString, dbUser, dbPass);
-
-        return dbConnection;
+    DataBaseHandler dataBaseHandler = DataBaseHandler.getInstance();
+    public AdminPanelModel() throws SQLException, ClassNotFoundException {
     }
 
     public boolean addBike(String name, String type, String model, String numbergear, String price, int idshop) {
@@ -30,7 +25,7 @@ public class AdminPanelModel extends ConstAllTable {
                     + BIKE_NUMBERGEAR + ", "
                     + BIKE_STATUS + ", "
                     + BIKE_PRICEHOUR + ") VALUES (?, ?, ?, ?, ?, ?, ?)";
-            PreparedStatement prSt = getDbConnection().prepareStatement(insertBike);
+            PreparedStatement prSt = dataBaseHandler.getConnection().prepareStatement(insertBike);
             prSt.setInt(1, idshop);
             prSt.setString(2, name);
             prSt.setString(3, model);
@@ -46,8 +41,6 @@ public class AdminPanelModel extends ConstAllTable {
             errorAlert();
             e.printStackTrace();
             return false;
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
         }
         return true;
     }
@@ -62,12 +55,12 @@ public class AdminPanelModel extends ConstAllTable {
         try {
             String allShops = "SELECT * FROM " + SHOPS_TABLE;
 
-            PreparedStatement prSt = getDbConnection().prepareStatement(allShops);
+            PreparedStatement prSt = dataBaseHandler.getConnection().prepareStatement(allShops);
 
             return result = prSt.executeQuery();
 
 
-        } catch (SQLException | ClassNotFoundException e) {
+        } catch (SQLException e) {
             errorAlert();
             e.printStackTrace();
         }
@@ -93,7 +86,7 @@ public class AdminPanelModel extends ConstAllTable {
 
 
         System.out.println(getInfoBusyBike);
-        PreparedStatement prSt = getDbConnection().prepareStatement(getInfoBusyBike);
+        PreparedStatement prSt = dataBaseHandler.getConnection().prepareStatement(getInfoBusyBike);
         prSt.setString(1,"busy");
         return prSt.executeQuery();
     }
@@ -113,7 +106,7 @@ public class AdminPanelModel extends ConstAllTable {
                 + SHOPS_TABLE + "." + SHOPS_ID
                 + " WHERE " + BIKE_TABLE + "." + BIKE_STATUS + " = ?;";
 
-        PreparedStatement prSt = getDbConnection().prepareStatement(getInfoFreeBike);
+        PreparedStatement prSt = dataBaseHandler.getConnection().prepareStatement(getInfoFreeBike);
         prSt.setString(1, "free");
         return prSt.executeQuery();
     }
@@ -137,16 +130,86 @@ public class AdminPanelModel extends ConstAllTable {
                     + PASSPORT_TABLE + "." + PASSPORT_ID;
             System.out.println(getInfoUser);
 
-            PreparedStatement prSt = getDbConnection().prepareStatement(getInfoUser);
+            PreparedStatement prSt = dataBaseHandler.getConnection().prepareStatement(getInfoUser);
             result = prSt.executeQuery();
         } catch (SQLException e) {
-            errorAlert();
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
             errorAlert();
             e.printStackTrace();
         }
         return result;
     }
 
+    public void raiseStatusUser(String status, int idUser){
+        try {
+            if (status.equals("client"))
+                status = "employee";
+            else if (status.equals("employee"))
+                status = "super_user";
+            else if (status.equals("super_user"))
+                status = "client";
+
+            String raiseStatusUserSQL = "UPDATE " + USER_TABLE + " SET "
+                    + USER_MANDAT + " = ? WHERE " + USER_ID + " = ?;";
+            PreparedStatement prSt = dataBaseHandler.getConnection().prepareStatement(raiseStatusUserSQL);
+            prSt.setString(1, status);
+            prSt.setInt(2, idUser);
+
+            prSt.executeUpdate();
+        } catch (SQLException e) {
+            errorAlert();
+            e.printStackTrace();
+        }
+    }
+
+    public boolean deleteUser(User user) {
+        try{
+            String deleteAutorizateSQL = "DELETE FROM " + AUTORIZATIONS_TABLE
+                    + " WHERE " + AUTORIZATIONS_IDUSER + " = ?";
+
+            PreparedStatement prSt = dataBaseHandler.getConnection().prepareStatement(deleteAutorizateSQL);
+            prSt.setInt(1, user.getId());
+
+            prSt.executeUpdate();
+
+            String deleteUserSQL = "DELETE FROM " + USER_TABLE
+                    + " WHERE " + USER_ID + " = ?";
+
+            prSt = dataBaseHandler.getConnection().prepareStatement(deleteUserSQL);
+            prSt.setInt(1, user.getId());
+
+            prSt.executeUpdate();
+
+            String deletePassportSQL = "DELETE FROM " + PASSPORT_TABLE
+                    + " WHERE " + PASSPORT_ID + " = (SELECT " + USER_IDPASSPORT + " FROM " + USER_TABLE + " WHERE " + USER_ID + " = ?" + ")";
+
+            prSt = dataBaseHandler.getConnection().prepareStatement(deletePassportSQL);
+            prSt.setInt(1, user.getId());
+
+            prSt.executeUpdate();
+
+        } catch (SQLException e) {
+            errorAlert();
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+
+    public boolean deleteBike(Bicycle bike) {
+        try{
+            String deleteUserSQL = "DELETE FROM " + BIKE_TABLE
+                    + " WHERE " + BIKE_ID + " = ?;";
+
+            PreparedStatement prSt = dataBaseHandler.getConnection().prepareStatement(deleteUserSQL);
+            prSt.setInt(1, bike.getId());
+
+            prSt.executeQuery();
+
+        } catch (SQLException e) {
+            errorAlert();
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
 }

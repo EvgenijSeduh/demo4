@@ -377,7 +377,14 @@ public class EmployeePanelController extends ConstAllTable {
                         + "\n Магазин: " + shopCloseRent.get().getName() + " " + shopCloseRent.get().getAddress(), ButtonType.YES, ButtonType.NO);
                 Optional<ButtonType> result = questionCloseRent.showAndWait();
                 if (result.isPresent() && result.get() == ButtonType.YES) {
-                    ModelEmployeePanel modelEmployeePanel = new ModelEmployeePanel();
+                    ModelEmployeePanel modelEmployeePanel = null;
+                    try {
+                        modelEmployeePanel = new ModelEmployeePanel();
+                    } catch (SQLException e) {
+                        throw new RuntimeException(e);
+                    } catch (ClassNotFoundException e) {
+                        throw new RuntimeException(e);
+                    }
                     shopSelect.set("");
                     userSelect.set("");
                     bikeSelect.set("");
@@ -478,12 +485,12 @@ public class EmployeePanelController extends ConstAllTable {
                         rentBikeInfo.getInt(BIKE_PRICEHOUR),
                         rentBikeInfo.getString(RESERVATION_DATERECEIPT)));
             }
-        } catch (SQLException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
     }
     
-    private boolean createCloseRent(ShortUser user, Bicycle bike, Shop shop){
+    private boolean createCloseRent(ShortUser user, Bicycle bike, Shop shop) throws SQLException, ClassNotFoundException {
         ModelEmployeePanel modelEmployeePanel = new ModelEmployeePanel();
         return modelEmployeePanel.createCloseRent(user, bike, shop);
     }

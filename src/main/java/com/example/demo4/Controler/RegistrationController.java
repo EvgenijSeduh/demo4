@@ -14,6 +14,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
+import java.sql.SQLException;
 
 public class RegistrationController {
 
@@ -69,16 +70,23 @@ public class RegistrationController {
             }
 
             if (infoUser.isFill()) {
-                if (singUpUser(infoUser)) {
-                    Alert successfulRegistration = new Alert(Alert.AlertType.INFORMATION, "Вы зарегистрированы", ButtonType.OK);
-                    successfulRegistration.showAndWait();
-                } else {
-                    Alert failedRegistration = new Alert(Alert.AlertType.WARNING, "Вы не зарегистрированы", ButtonType.OK);
-                    failedRegistration.showAndWait();
+                try {
+                    if (singUpUser(infoUser)) {
+                        Alert successfulRegistration = new Alert(Alert.AlertType.INFORMATION, "Вы зарегистрированы", ButtonType.OK);
+                        successfulRegistration.showAndWait();
+                    } else {
+                        Alert failedRegistration = new Alert(Alert.AlertType.WARNING, "Вы не зарегистрированы", ButtonType.OK);
+                        failedRegistration.showAndWait();
+                    }
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                } catch (ClassNotFoundException e) {
+                    throw new RuntimeException(e);
                 }
-            }
-                Alert emptyFields = new Alert(Alert.AlertType.WARNING, "Есть пустые поля", ButtonType.OK);
+            }else {
+                Alert emptyFields = new Alert(Alert.AlertType.WARNING, "Есть пустые поля или поля заполнен неверно", ButtonType.OK);
                 emptyFields.showAndWait();
+            }
         });
 
         buttonExit.setOnAction(event -> {
@@ -100,7 +108,7 @@ public class RegistrationController {
         });
     }
 
-    private boolean singUpUser(InfoUser infoUser) {
+    private boolean singUpUser(InfoUser infoUser) throws SQLException, ClassNotFoundException {
         ModelRegistrationUser modelRegistrationUser = new ModelRegistrationUser();
         return modelRegistrationUser.signUpUser(infoUser);
     }

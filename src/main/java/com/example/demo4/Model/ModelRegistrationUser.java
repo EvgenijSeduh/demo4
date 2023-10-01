@@ -2,6 +2,7 @@ package com.example.demo4.Model;
 
 
 import com.example.demo4.Recource.Const.ConstAllTable;
+import com.example.demo4.Recource.DataBaseHandler;
 import com.example.demo4.Recource.InfoUser;
 
 import java.sql.*;
@@ -9,17 +10,9 @@ import java.sql.*;
 import static java.lang.Integer.parseInt;
 
 public class ModelRegistrationUser extends ConstAllTable {
-    Connection dbConnection;
+    DataBaseHandler dataBaseHandler = DataBaseHandler.getInstance();
 
-    public Connection getDbConnection() throws ClassNotFoundException,SQLException{
-        String connectionString = "jdbc:mysql://" + dbHost + ":" + dbPort + "/" + dbName;
-
-
-        Class.forName("com.mysql.cj.jdbc.Driver");
-
-        dbConnection = DriverManager.getConnection(connectionString,dbUser,dbPass);
-
-        return  dbConnection;
+    public ModelRegistrationUser() throws SQLException, ClassNotFoundException {
     }
 
     public boolean signUpUser(InfoUser infoUser){
@@ -63,16 +56,16 @@ public class ModelRegistrationUser extends ConstAllTable {
                     + AUTORIZATIONS_PASSWORD
                     + ") VALUES (?, ?, ?);";
 
-            Statement statement = getDbConnection().createStatement();
+            Statement statement = dataBaseHandler.getConnection().createStatement();
 
 //-----------------------------------------------------------------------
-            PreparedStatement prSt = getDbConnection().prepareStatement(setPassportsDate);
+            PreparedStatement prSt = dataBaseHandler.getConnection().prepareStatement(setPassportsDate);
             prSt.setString(1, infoUser.getSeriesPass());
             prSt.setString(2, infoUser.getNuberPass());
 
             prSt.executeUpdate();
 //-----------------------------------------------------------------------
-            prSt = getDbConnection().prepareStatement(getIdPassport);
+            prSt = dataBaseHandler.getConnection().prepareStatement(getIdPassport);
             prSt.setString(1, infoUser.getSeriesPass());
             prSt.setString(2, infoUser.getNuberPass());
 
@@ -87,7 +80,7 @@ public class ModelRegistrationUser extends ConstAllTable {
             System.out.println(idPassport.getMetaData().getColumnName(1));
             System.out.println(idPassport.getInt(PASSPORT_ID));
 //----------------------------------------------------------------------
-            prSt = getDbConnection().prepareStatement(setUserDate);
+            prSt = dataBaseHandler.getConnection().prepareStatement(setUserDate);
             prSt.setInt(1, idPassport.getInt(PASSPORT_ID));
             prSt.setString(2, infoUser.getName());
             prSt.setString(3, infoUser.getCountry());
@@ -98,7 +91,7 @@ public class ModelRegistrationUser extends ConstAllTable {
 
             prSt.executeUpdate();
 //----------------------------------------------------------------------
-            prSt = getDbConnection().prepareStatement(getIdUser);
+            prSt = dataBaseHandler.getConnection().prepareStatement(getIdUser);
             prSt.setInt(1, idPassport.getInt(PASSPORT_ID));
             prSt.setString(2, infoUser.getName());
             prSt.setString(3, infoUser.getCountry());
@@ -109,7 +102,7 @@ public class ModelRegistrationUser extends ConstAllTable {
             ResultSet idUser = prSt.executeQuery();
             idUser.next();
 // ---------------------------------------------------------------------
-            prSt = getDbConnection().prepareStatement(setAutorizationsDate);
+            prSt = dataBaseHandler.getConnection().prepareStatement(setAutorizationsDate);
             prSt.setInt(1, parseInt(idUser.getString(USER_ID)));
             prSt.setString(2, infoUser.getLogin());
             prSt.setBytes(3, infoUser.getPassword());
@@ -119,14 +112,9 @@ public class ModelRegistrationUser extends ConstAllTable {
 
             statement.close();
             prSt.close();
-            dbConnection.close();
             return true;
         }
         catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
-        catch (ClassNotFoundException e) {
             e.printStackTrace();
             return false;
         }

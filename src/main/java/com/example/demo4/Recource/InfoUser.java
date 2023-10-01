@@ -198,4 +198,5 @@ public class InfoUser extends Requirements {
         byte[] hashPassword = digest.digest((password + SALT).getBytes());
         return hashPassword;
     }
+
 }

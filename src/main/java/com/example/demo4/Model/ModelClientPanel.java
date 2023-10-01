@@ -1,24 +1,17 @@
 package com.example.demo4.Model;
 
 import com.example.demo4.Recource.Const.ConstAllTable;
+import com.example.demo4.Recource.DataBaseHandler;
 
 
 import java.sql.*;
 
 public class ModelClientPanel extends ConstAllTable {
-    Connection dbConnection;
+    DataBaseHandler dataBaseHandler = DataBaseHandler.getInstance();
 
-
-    public Connection getDbConnection() throws ClassNotFoundException, SQLException {
-        String connectionString = "jdbc:mysql://" + dbHost + ":" + dbPort + "/" + dbName;
-
-
-        Class.forName("com.mysql.cj.jdbc.Driver");
-
-        dbConnection = DriverManager.getConnection(connectionString, dbUser, dbPass);
-
-        return dbConnection;
+    public ModelClientPanel() throws SQLException, ClassNotFoundException {
     }
+
     public ResultSet getBusyBikeInfo() throws SQLException, ClassNotFoundException {
         String nameIntermediateTable = "bike_data";
 
@@ -39,7 +32,7 @@ public class ModelClientPanel extends ConstAllTable {
 
 
         System.out.println(getInfoBusyBike);
-        PreparedStatement prSt = getDbConnection().prepareStatement(getInfoBusyBike);
+        PreparedStatement prSt = dataBaseHandler.getConnection().prepareStatement(getInfoBusyBike);
         prSt.setString(1,"busy");
         return prSt.executeQuery();
     }
@@ -59,7 +52,7 @@ public class ModelClientPanel extends ConstAllTable {
                 + SHOPS_TABLE + "." + SHOPS_ID
                 + " WHERE " + BIKE_TABLE + "." + BIKE_STATUS + " = ?;";
 
-        PreparedStatement prSt = getDbConnection().prepareStatement(getInfoFreeBike);
+        PreparedStatement prSt = dataBaseHandler.getConnection().prepareStatement(getInfoFreeBike);
         prSt.setString(1, "free");
         return prSt.executeQuery();
     }
